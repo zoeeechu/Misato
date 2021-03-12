@@ -3,6 +3,7 @@ const client = new Discord.Client();
 const fetch = require('node-fetch');
 const imgs = require("../Misato/imgs/imgs.json");
 const boobs = require("../Misato/imgs/boobs.json");
+const bdsm = require("../Misato/imgs/BDSM.json");
 const mongo = require('../Misato/mongo.js');
 const mongoose = require('mongoose');
 const dailyRewardsSchema = require('../Misato/daily_rewards_schema.js')
@@ -238,6 +239,9 @@ async function processCommand(receivedMessage) {
 			case 'avatar':
 				avCommand(arguments, receivedMessage);
 				break;
+			case 'bdsm':
+				bdsmCommand(arguments, receivedMessage);
+				break;
 			default:
 				receivedMessage.channel.send('not a command');
 		}
@@ -282,7 +286,7 @@ async function helpCommand(arguments, receivedMessage) {
 			.setDescription("Here's a list of all the commands my prefix is `S!` Master ❤️")
 			.addField("⠀", "⠀", false)
 			.addField("  Fun 🎲", " `meme` `cat` `dog` `avatar`", false)// `cat` `dog` `neko` `meme` `search` `needlove` `needhelp` `cookie` `duel`
-			.addField("  Hentai 💦", " `hentai` `pussy` `yuri` `boobs` `futa` `anal` `femdom` `solo` `feet` `yaoi` `threesome`", false)
+			.addField("  Hentai 💦", " `hentai` `pussy` `yuri` `boobs` `futa` `anal` `femdom` `solo` `feet` `yaoi` `threesome` `BDSM`", false)
 			.addField("  Porn 🍑", " `rboobs`", false)
 			.addField("  Economy 💰", " `daily`", false)
 			.addField("  Actions ✨", " `hug` `pat` `kiss` `cuddle` `bj` `punch` `bite` `stab` `revive` `slap` `carry` `lick` `hf` `boop` `fuck`", false) // `pat` `carry` `kiss` `lick` `boop` `cuddle` `punch` `bite` `revive` `slap` `throw` `happybirthday` `stab` `hf` `propose` `glomp`
@@ -290,8 +294,15 @@ async function helpCommand(arguments, receivedMessage) {
 			.addField("  Moderation ⚙️", " `Purge` `addbal` `subbal`", false)
 			.addField("  Other 💫", " `info` ", false)
 			//.setFooter("█▚▞▌ █ ▄█▀ ▅▀▅ ▀█▀ ⬤")
+
+			let warning = new Discord.MessageEmbed()
+			.setColor([255, 0, 0])
+			.setTitle("///Please keep in mind///")
+			.setDescription("this bot is still in its development stages not everything will work 100%")
+			.setThumbnail("https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Caution_sign_used_on_roads_pn.svg/1200px-Caution_sign_used_on_roads_pn.svg.png")
 		
 		receivedMessage.channel.send(exembed)
+		receivedMessage.channel.send(warning)
 	} catch (err) {
 		catchERR(err, receivedMessage);
 	}
@@ -733,6 +744,47 @@ async function smhCommand(arguments, receivedMessage) {
 
 
 }
+
+async function bdsmCommand(arguments, receivedMessage) {
+
+	try {
+
+
+		const rando = bdsm.bdsm_hentai[Math.floor(Math.random() * bdsm.bdsm_hentai.length)];
+
+		if (rando == 0) {
+			rando == 1
+			let hugembed = new Discord.MessageEmbed()
+				.setColor([255, 153, 255])
+				.setTitle("S-Senpai~")
+				.setImage(rando)
+				.setFooter("///this command is still in development///")
+
+
+
+
+			receivedMessage.channel.send(hugembed);
+		}
+
+
+		let hugembed = new Discord.MessageEmbed()
+			.setColor([255, 153, 255])
+			.setTitle("S-Senpai~")
+			.setImage(rando)
+			.setFooter("///this command is still in development///")
+
+
+
+
+		receivedMessage.channel.send(hugembed);
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+
 
 async function boopCommand(arguments, receivedMessage) {
 	try {
