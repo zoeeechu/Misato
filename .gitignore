@@ -1,0 +1,4 @@
+.env
+node_modules/
+N3KO_SAMPLE/
+workspace.code-workspace
