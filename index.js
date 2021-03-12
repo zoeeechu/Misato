@@ -2444,4 +2444,4 @@ async function roleCommand(arguments, receivedMessage) {
 }*/
 //please do not touch the token
 // ^^ its grabbing the token form the .env file
-client.login('Nzk5NDgwNTg1NjYzNTQ1Mzk1.YAEMUQ.w-8-100IEQD26BlkmDcC4NyC2JE');
+client.login(prefix);
