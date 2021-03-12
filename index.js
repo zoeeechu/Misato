@@ -1,11 +1,11 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const fetch = require('node-fetch');
-const imgs = require("../Bot/imgs/imgs.json");
-const boobs = require("../Bot/imgs/boobs.json");
-const mongo = require('../Bot/mongo.js');
+const imgs = require("../Misato/imgs/imgs.json");
+const boobs = require("../Misato/imgs/boobs.json");
+const mongo = require('../Misato/mongo.js');
 const mongoose = require('mongoose');
-const dailyRewardsSchema = require('../Bot/daily_rewards_schema.js')
+const dailyRewardsSchema = require('../Misato/daily_rewards_schema.js')
 
 
 
@@ -460,7 +460,7 @@ async function dabalCommand(arguments, receivedMessage) {
 		await mongo().then(async mongoose => {
 			try {
 				const reply = ("You have already claimed your daily <:CutePeach:817591031880744988>")
-				const economy = require("../Bot/economy.js")
+				const economy = require("../Misato/economy.js")
 				
 				const results = await dailyRewardsSchema.findOne(obj)
 				console.log('RESULTS:', results)
@@ -532,7 +532,7 @@ async function dabalCommand(arguments, receivedMessage) {
 
 async function balCommand(arguments, receivedMessage) {
 	try {
-		const economy = require("../Bot/economy.js")
+		const economy = require("../Misato/economy.js")
 		target = receivedMessage.mentions.users.first()
 		const person = receivedMessage.mentions.users.first()
 		if (!person) {
@@ -567,7 +567,7 @@ async function abalCommand(arguments, receivedMessage) {
 	try {
 		if (receivedMessage.member.hasPermission("ADMINISTRATOR")) {
 
-			const economy = require("../Bot/economy.js")
+			const economy = require("../Misato/economy.js")
 			const mention = receivedMessage.mentions.users.first()
 			if (!mention) {
 				receivedMessage.reply('You did not say who you wanted to add to')
@@ -609,7 +609,7 @@ async function sbalCommand(arguments, receivedMessage) {
 		if (receivedMessage.member.hasPermission("ADMINISTRATOR")) {
 
 
-			const economy = require("../Bot/economy.js")
+			const economy = require("../Misato/economy.js")
 			const mention = receivedMessage.mentions.users.first()
 			if (!mention) {
 				receivedMessage.reply('You did not say who you wanted to add to')
