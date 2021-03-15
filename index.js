@@ -1,4 +1,5 @@
 const Discord = require('discord.js');
+
 const client = new Discord.Client();
 const fetch = require('node-fetch');
 const imgs = require("../Misato/imgs/imgs.json");
@@ -6,6 +7,7 @@ const boobs = require("../Misato/imgs/boobs.json");
 const bdsm = require("../Misato/imgs/BDSM.json");
 const mongo = require('../Misato/mongo.js');
 const mongoose = require('mongoose');
+const owoify = require('owoify-js').default
 const dailyRewardsSchema = require('../Misato/daily_rewards_schema.js')
 
 
@@ -14,7 +16,6 @@ const dailyRewardsSchema = require('../Misato/daily_rewards_schema.js')
 
 require('dotenv').config();
 const prefix = process.env.DISCORD_TOKEN;
-
 //https://nekos.life/api/v2/endpoints
 //for all the neko.llife api endpoints as reference
 
@@ -242,6 +243,9 @@ async function processCommand(receivedMessage) {
 			case 'bdsm':
 				bdsmCommand(arguments, receivedMessage);
 				break;
+			case 'owo':
+				owoCommand(arguments, receivedMessage);
+				break;
 			default:
 				receivedMessage.channel.send('not a command');
 		}
@@ -285,7 +289,7 @@ async function helpCommand(arguments, receivedMessage) {
 			.setAuthor("█▚▞▌ █ ▄█▀ ▅▀▅ ▀█▀ ⬤  🌺")
 			.setDescription("Here's a list of all the commands my prefix is `S!` Master ❤️")
 			.addField("⠀", "⠀", false)
-			.addField("  Fun 🎲", " `meme` `cat` `dog` `avatar`", false)// `cat` `dog` `neko` `meme` `search` `needlove` `needhelp` `cookie` `duel`
+			.addField("  Fun 🎲", " `meme` `cat` `dog` `avatar` `owo`", false)// `cat` `dog` `neko` `meme` `search` `needlove` `needhelp` `cookie` `duel`
 			.addField("  Hentai 💦", " `hentai` `pussy` `yuri` `boobs` `futa` `anal` `femdom` `solo` `feet` `yaoi` `threesome` `BDSM`", false)
 			.addField("  Porn 🍑", " `rboobs`", false)
 			.addField("  Economy 💰", " `daily`", false)
@@ -782,6 +786,24 @@ async function bdsmCommand(arguments, receivedMessage) {
 	}
 
 
+}
+
+
+async function owoCommand(arguments, receivedMessage) {
+    try {
+
+        var Text = arguments.join(" ");
+
+
+
+        
+        
+                receivedMessage.channel.send(owoify(Text));
+
+       
+    } catch (err) {
+        catchERR(err, receivedMessage);
+    }
 }
 
 
