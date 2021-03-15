@@ -8,6 +8,7 @@ const bdsm = require("../Misato/imgs/BDSM.json");
 const mongo = require('../Misato/mongo.js');
 const mongoose = require('mongoose');
 const owoify = require('owoify-js').default
+const Canvas = require('canvas');
 const dailyRewardsSchema = require('../Misato/daily_rewards_schema.js')
 
 
@@ -245,6 +246,9 @@ async function processCommand(receivedMessage) {
 				break;
 			case 'owo':
 				owoCommand(arguments, receivedMessage);
+				break;
+			case 'gun':
+				gunCommand(arguments, receivedMessage);
 				break;
 			default:
 				receivedMessage.channel.send('not a command');
@@ -794,12 +798,38 @@ async function owoCommand(arguments, receivedMessage) {
 
         var Text = arguments.join(" ");
 
-
-
-        
         
                 receivedMessage.channel.send(owoify(Text));
 
+       
+    } catch (err) {
+        catchERR(err, receivedMessage);
+    }
+}
+
+async function gunCommand(arguments, receivedMessage) {
+    try {
+
+		let mentionedMember = receivedMessage.mentions.users.first()
+
+        if(!mentionedMember) 
+		{
+			mentionedMember = receivedMessage.author
+		}
+        
+
+
+		const canvas = Canvas.createCanvas(600, 512);
+		const ctx = canvas.getContext('2d');
+		const avatar = await Canvas.loadImage(mentionedMember.displayAvatarURL({ format: 'jpg' }));
+		ctx.drawImage(avatar, 25, 25, 512, 512);
+
+		const Gun = await Canvas.loadImage('../Misato/imgs/c75.png');
+		ctx.drawImage(Gun, 350, 200, 300, 300);
+
+		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'gun.png');
+
+		receivedMessage.channel.send(attachment);
        
     } catch (err) {
         catchERR(err, receivedMessage);
