@@ -275,6 +275,9 @@ async function processCommand(receivedMessage) {
 			case 'trigger':
 				triggerCommand(arguments, receivedMessage);
 				break;
+			case 'easteregg':
+				eggCommand(arguments, receivedMessage);
+				break;
 			default:
 				receivedMessage.channel.send('not a command');
 		}
@@ -318,7 +321,7 @@ async function helpCommand(arguments, receivedMessage) {
 			.setAuthor("█▚▞▌ █ ▄█▀ ▅▀▅ ▀█▀ ⬤  🌺")
 			.setDescription("Here's a list of all the commands my prefix is `S!` Master ❤️")
 			.addField("⠀", "⠀", false)
-			.addField("  Fun 🎲", " `meme` `cat` `dog` `avatar` `owo` `gun` `jail` `gay` `whymask` `psps` `reason` `yeet` `license`", false)// `cat` `dog` `neko` `meme` `search` `needlove` `needhelp` `cookie` `duel`
+			.addField("  Fun 🎲", " `meme` `cat` `dog` `avatar` `owo` `gun` `jail` `gay` `whymask` `psps` `reason` `yeet` `license` `trigger`", false)// `cat` `dog` `neko` `meme` `search` `needlove` `needhelp` `cookie` `duel`
 			.addField("  Hentai 💦", " `hentai` `pussy` `yuri` `boobs` `futa` `anal` `femdom` `solo` `feet` `yaoi` `threesome` `BDSM`", false)
 			.addField("  Porn 🍑", " `rboobs`", false)
 			.addField("  Economy 💰", " `daily`", false)
@@ -1139,6 +1142,24 @@ async function boopCommand(arguments, receivedMessage) {
 
 			receivedMessage.channel.send(hugembed);
 		}
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+}
+
+async function eggCommand(arguments, receivedMessage) {
+	try {
+
+		
+				let embed = new Discord.MessageEmbed()
+					.setColor([255, 153, 255])
+					.setTitle("oooh  lookie here~ ❤️")
+					.setDescription("someone just found our little secret hm~?")
+					.setImage("https://66.media.tumblr.com/827b8e793dcb830ca0678f61c63975fa/tumblr_ot1jea4BYq1wobjc9o3_500.gif")
+
+				receivedMessage.channel.send(embed);
+			
 	} catch (err) {
 		catchERR(err, receivedMessage);
 	}
