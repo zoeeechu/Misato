@@ -9,6 +9,7 @@ const mongo = require('../Misato/mongo.js');
 const mongoose = require('mongoose');
 const owoify = require('owoify-js').default
 const Canvas = require('canvas');
+const canvacord = require("canvacord");
 const dailyRewardsSchema = require('../Misato/daily_rewards_schema.js')
 
 
@@ -21,7 +22,7 @@ const prefix = process.env.DISCORD_TOKEN;
 //for all the neko.llife api endpoints as reference
 
 client.on('ready', async () => {
-	client.user.setActivity('With Boos! || S!help');
+	client.user.setActivity('With Boobs! || S!help');
 
 	console.log("\x1b[35m", ' 🍬  Bot (' + client.user.tag + ') Ready!');
 	// \x1b[35m is fancy text for making the console log text Magenta 
@@ -268,6 +269,12 @@ async function processCommand(receivedMessage) {
 			case 'yeet':
 				yeetCommand(arguments, receivedMessage);
 				break;
+			case 'license':
+				licenseCommand(arguments, receivedMessage);
+				break;
+			case 'trigger':
+				triggerCommand(arguments, receivedMessage);
+				break;
 			default:
 				receivedMessage.channel.send('not a command');
 		}
@@ -311,7 +318,7 @@ async function helpCommand(arguments, receivedMessage) {
 			.setAuthor("█▚▞▌ █ ▄█▀ ▅▀▅ ▀█▀ ⬤  🌺")
 			.setDescription("Here's a list of all the commands my prefix is `S!` Master ❤️")
 			.addField("⠀", "⠀", false)
-			.addField("  Fun 🎲", " `meme` `cat` `dog` `avatar` `owo` `gun` `jail` `gay` `whymask` `psps` `reason` `yeet`", false)// `cat` `dog` `neko` `meme` `search` `needlove` `needhelp` `cookie` `duel`
+			.addField("  Fun 🎲", " `meme` `cat` `dog` `avatar` `owo` `gun` `jail` `gay` `whymask` `psps` `reason` `yeet` `license`", false)// `cat` `dog` `neko` `meme` `search` `needlove` `needhelp` `cookie` `duel`
 			.addField("  Hentai 💦", " `hentai` `pussy` `yuri` `boobs` `futa` `anal` `femdom` `solo` `feet` `yaoi` `threesome` `BDSM`", false)
 			.addField("  Porn 🍑", " `rboobs`", false)
 			.addField("  Economy 💰", " `daily`", false)
@@ -854,6 +861,28 @@ async function gunCommand(arguments, receivedMessage) {
     }
 }
 
+async function triggerCommand(arguments, receivedMessage) {
+    try {
+
+		let mentionedMember = receivedMessage.mentions.users.first()
+
+        if(!mentionedMember) 
+		{
+			mentionedMember = receivedMessage.author
+		}
+
+		let avatar = mentionedMember.displayAvatarURL({ dynamic: false, format: 'png' });
+        let image = await canvacord.Canvas.trigger(avatar);
+        let attachment = new Discord.MessageAttachment(image, "triggered.gif");
+        return receivedMessage.channel.send(attachment);
+        
+
+       
+    } catch (err) {
+        catchERR(err, receivedMessage);
+    }
+}
+
 async function reasonCommand(arguments, receivedMessage) {
     try {
 
@@ -904,6 +933,35 @@ async function yeetCommand(arguments, receivedMessage) {
 		ctx.drawImage(avatar, 280, 230, 120, 120);		
 
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'reason.png');
+
+		receivedMessage.channel.send(attachment);
+       
+    } catch (err) {
+        catchERR(err, receivedMessage);
+    }
+}
+
+async function licenseCommand(arguments, receivedMessage) {
+    try {
+
+		let mentionedMember = receivedMessage.mentions.users.first()
+
+        if(!mentionedMember) 
+		{
+			mentionedMember = receivedMessage.author
+		}
+        
+
+
+		const canvas = Canvas.createCanvas(512, 512);
+		const ctx = canvas.getContext('2d');
+		const license = await Canvas.loadImage('../Misato/imgs/license.png');
+		ctx.drawImage(license, 0, 0, 512, 512);
+		ctx.rotate(-0.3)
+		const avatar = await Canvas.loadImage(mentionedMember.displayAvatarURL({ format: 'jpg' }));
+		ctx.drawImage(avatar, 5, 230, 120, 120);		
+
+		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'license.png');
 
 		receivedMessage.channel.send(attachment);
        
