@@ -21,7 +21,7 @@ const prefix = process.env.DISCORD_TOKEN;
 //for all the neko.llife api endpoints as reference
 
 client.on('ready', async () => {
-	client.user.setActivity('With Boobs! || S!help');
+	client.user.setActivity('With Boos! || S!help');
 
 	console.log("\x1b[35m", ' 🍬  Bot (' + client.user.tag + ') Ready!');
 	// \x1b[35m is fancy text for making the console log text Magenta 
@@ -250,6 +250,24 @@ async function processCommand(receivedMessage) {
 			case 'gun':
 				gunCommand(arguments, receivedMessage);
 				break;
+			case 'jail':
+				jailCommand(arguments, receivedMessage);
+				break;
+			case 'gay':
+				gayCommand(arguments, receivedMessage);
+				break;
+			case 'whymask':
+				whymaskCommand(arguments, receivedMessage);
+				break;
+			case 'psps':
+				pspsCommand(arguments, receivedMessage);
+				break;
+			case 'reason':
+				reasonCommand(arguments, receivedMessage);
+				break;
+			case 'yeet':
+				yeetCommand(arguments, receivedMessage);
+				break;
 			default:
 				receivedMessage.channel.send('not a command');
 		}
@@ -293,7 +311,7 @@ async function helpCommand(arguments, receivedMessage) {
 			.setAuthor("█▚▞▌ █ ▄█▀ ▅▀▅ ▀█▀ ⬤  🌺")
 			.setDescription("Here's a list of all the commands my prefix is `S!` Master ❤️")
 			.addField("⠀", "⠀", false)
-			.addField("  Fun 🎲", " `meme` `cat` `dog` `avatar` `owo`", false)// `cat` `dog` `neko` `meme` `search` `needlove` `needhelp` `cookie` `duel`
+			.addField("  Fun 🎲", " `meme` `cat` `dog` `avatar` `owo` `gun` `jail` `gay` `whymask` `psps` `reason` `yeet`", false)// `cat` `dog` `neko` `meme` `search` `needlove` `needhelp` `cookie` `duel`
 			.addField("  Hentai 💦", " `hentai` `pussy` `yuri` `boobs` `futa` `anal` `femdom` `solo` `feet` `yaoi` `threesome` `BDSM`", false)
 			.addField("  Porn 🍑", " `rboobs`", false)
 			.addField("  Economy 💰", " `daily`", false)
@@ -828,6 +846,192 @@ async function gunCommand(arguments, receivedMessage) {
 		ctx.drawImage(Gun, 350, 200, 300, 300);
 
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'gun.png');
+
+		receivedMessage.channel.send(attachment);
+       
+    } catch (err) {
+        catchERR(err, receivedMessage);
+    }
+}
+
+async function reasonCommand(arguments, receivedMessage) {
+    try {
+
+		let mentionedMember = receivedMessage.mentions.users.first()
+
+        if(!mentionedMember) 
+		{
+			mentionedMember = receivedMessage.author
+		}
+        
+
+
+		const canvas = Canvas.createCanvas(359, 810);
+		const ctx = canvas.getContext('2d');
+		const reason = await Canvas.loadImage('../Misato/imgs/reason.png');
+		ctx.drawImage(reason, 0, 0, 359, 810);
+
+		const avatar = await Canvas.loadImage(mentionedMember.displayAvatarURL({ format: 'jpg' }));
+		ctx.drawImage(avatar, 25, 400, 140, 140);		
+
+		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'reason.png');
+
+		receivedMessage.channel.send(attachment);
+       
+    } catch (err) {
+        catchERR(err, receivedMessage);
+    }
+}
+
+async function yeetCommand(arguments, receivedMessage) {
+    try {
+
+		let mentionedMember = receivedMessage.mentions.users.first()
+
+        if(!mentionedMember) 
+		{
+			mentionedMember = receivedMessage.author
+		}
+        
+
+
+		const canvas = Canvas.createCanvas(512, 512);
+		const ctx = canvas.getContext('2d');
+		const reason = await Canvas.loadImage('../Misato/imgs/yeet.jpg');
+		ctx.drawImage(reason, 0, 0, 512, 512);
+		ctx.rotate(-0.3)
+		const avatar = await Canvas.loadImage(mentionedMember.displayAvatarURL({ format: 'jpg' }));
+		ctx.drawImage(avatar, 280, 230, 120, 120);		
+
+		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'reason.png');
+
+		receivedMessage.channel.send(attachment);
+       
+    } catch (err) {
+        catchERR(err, receivedMessage);
+    }
+}
+
+async function jailCommand(arguments, receivedMessage) {
+    try {
+
+		let mentionedMember = receivedMessage.mentions.users.first()
+
+        if(!mentionedMember) 
+		{
+			mentionedMember = receivedMessage.author
+		}
+        
+
+
+		const canvas = Canvas.createCanvas(600, 512);
+		const ctx = canvas.getContext('2d');
+		const avatar = await Canvas.loadImage(mentionedMember.displayAvatarURL({ format: 'jpg' }));
+		ctx.drawImage(avatar, 25, 25, 512, 512);
+
+		const jail = await Canvas.loadImage('../Misato/imgs/jail.png');
+		ctx.drawImage(jail, 25, 25, 512, 512);
+
+		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'jail.png');
+
+		receivedMessage.channel.send(attachment);
+       
+    } catch (err) {
+        catchERR(err, receivedMessage);
+    }
+}
+
+async function whymaskCommand(arguments, receivedMessage) {
+    try {
+
+		let mentionedMember = receivedMessage.mentions.users.first()
+
+        if(!mentionedMember) 
+		{
+			mentionedMember = receivedMessage.author
+		}
+        
+
+
+		const canvas = Canvas.createCanvas(600, 512);
+		const ctx = canvas.getContext('2d');
+		
+
+		const mask = await Canvas.loadImage('../Misato/imgs/whymask.jpg');
+		ctx.drawImage(mask, 25, 25, 512, 512);
+
+		ctx.beginPath();
+		ctx.arc(125, 390, 60, 0, Math.PI * 2, true);
+		ctx.closePath();
+		ctx.clip();
+		const avatar = await Canvas.loadImage(mentionedMember.displayAvatarURL({ format: 'jpg' }));
+		ctx.drawImage(avatar, 60, 330, 120, 120);
+
+		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'why.png');
+
+		receivedMessage.channel.send(attachment);
+       
+    } catch (err) {
+        catchERR(err, receivedMessage);
+    }
+}
+
+async function pspsCommand(arguments, receivedMessage) {
+    try {
+
+		let mentionedMember = receivedMessage.mentions.users.first()
+
+        if(!mentionedMember) 
+		{
+			mentionedMember = receivedMessage.author
+		}
+        
+
+
+		const canvas = Canvas.createCanvas(600, 512);
+		const ctx = canvas.getContext('2d');
+		
+
+		const mask = await Canvas.loadImage('../Misato/imgs/psps.jpg');
+		ctx.drawImage(mask, 25, 25, 512, 512);
+
+		ctx.beginPath();
+		ctx.arc(370, 320, 120, 0, Math.PI * 2, true);
+		ctx.closePath();
+		ctx.clip();
+		const avatar = await Canvas.loadImage(mentionedMember.displayAvatarURL({ format: 'jpg' }));
+		ctx.drawImage(avatar, 230, 160, 280, 280);
+
+		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'psps.png');
+
+		receivedMessage.channel.send(attachment);
+       
+    } catch (err) {
+        catchERR(err, receivedMessage);
+    }
+}
+
+async function gayCommand(arguments, receivedMessage) {
+    try {
+
+		let mentionedMember = receivedMessage.mentions.users.first()
+
+        if(!mentionedMember) 
+		{
+			mentionedMember = receivedMessage.author
+		}
+        
+
+
+		const canvas = Canvas.createCanvas(600, 512);
+		const ctx = canvas.getContext('2d');
+		const avatar = await Canvas.loadImage(mentionedMember.displayAvatarURL({ format: 'jpg' }));
+		ctx.drawImage(avatar, 25, 25, 512, 512);
+		ctx.globalAlpha = 0.5
+		const jail = await Canvas.loadImage('../Misato/imgs/gay.png');
+		ctx.drawImage(jail, 25, 25, 512, 512);
+
+		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'gay.png');
 
 		receivedMessage.channel.send(attachment);
        
