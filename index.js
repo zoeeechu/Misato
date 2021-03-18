@@ -10,7 +10,8 @@ const mongoose = require('mongoose');
 const owoify = require('owoify-js').default
 const Canvas = require('canvas');
 const canvacord = require("canvacord");
-const dailyRewardsSchema = require('../Misato/daily_rewards_schema.js')
+const dailyRewardsSchema = require('../Misato/daily_rewards_schema.js');
+const { author } = require('canvacord');
 
 
 
@@ -278,6 +279,25 @@ async function processCommand(receivedMessage) {
 			case 'easteregg':
 				eggCommand(arguments, receivedMessage);
 				break;
+			case 'wanted':
+				wantedCommand(arguments, receivedMessage);
+				break;
+			case 'rip':
+				ripCommand(arguments, receivedMessage);
+				break;
+			case 'slap2':
+				slapimgCommand(arguments, receivedMessage);
+				break;
+			case 'spank':
+				spankCommand(arguments, receivedMessage);
+				break;
+			case 'wasted':
+				wastedCommand(arguments, receivedMessage);
+				break;
+			case 'beautiful':
+				beautifulCommand(arguments, receivedMessage);
+				break;
+			
 			default:
 				receivedMessage.channel.send('not a command');
 		}
@@ -321,7 +341,8 @@ async function helpCommand(arguments, receivedMessage) {
 			.setAuthor("█▚▞▌ █ ▄█▀ ▅▀▅ ▀█▀ ⬤  🌺")
 			.setDescription("Here's a list of all the commands my prefix is `S!` Master ❤️")
 			.addField("⠀", "⠀", false)
-			.addField("  Fun 🎲", " `meme` `cat` `dog` `avatar` `owo` `gun` `jail` `gay` `whymask` `psps` `reason` `yeet` `license` `trigger`", false)// `cat` `dog` `neko` `meme` `search` `needlove` `needhelp` `cookie` `duel`
+			.addField("  Fun 🎲", " `meme` `cat` `dog` `avatar` `owo`", false)// `cat` `dog` `neko` `meme` `search` `needlove` `needhelp` `cookie` `duel`
+			.addField("  Image 📷", " `gun` `jail` `gay` `whymask` `psps` `reason` `yeet` `license` `trigger` `wanted` `rip` `slap2` `spank` `wasted` `beautiful`", false)
 			.addField("  Hentai 💦", " `hentai` `pussy` `yuri` `boobs` `futa` `anal` `femdom` `solo` `feet` `yaoi` `threesome` `BDSM`", false)
 			.addField("  Porn 🍑", " `rboobs`", false)
 			.addField("  Economy 💰", " `daily`", false)
@@ -329,7 +350,7 @@ async function helpCommand(arguments, receivedMessage) {
 			.addField("  Emotes 😇", " `cum` `smile` `hide` `eat` `cry`  `drink` `sleep` `run` `baka` `dance` `smh`", false)//`run` `sleep` `drink` `eat` `cry` `hide` `smile` `dance` `baka` `gm` `smh` 
 			.addField("  Moderation ⚙️", " `Purge` `addbal` `subbal`", false)
 			.addField("  Other 💫", " `info` ", false)
-			//.setFooter("█▚▞▌ █ ▄█▀ ▅▀▅ ▀█▀ ⬤")
+	
 
 			let warning = new Discord.MessageEmbed()
 			.setColor([255, 0, 0])
@@ -337,8 +358,9 @@ async function helpCommand(arguments, receivedMessage) {
 			.setDescription("this bot is still in its development stages not everything will work 100%")
 			.setThumbnail("https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Caution_sign_used_on_roads_pn.svg/1200px-Caution_sign_used_on_roads_pn.svg.png")
 		
-		receivedMessage.channel.send(exembed)
 		receivedMessage.channel.send(warning)
+		receivedMessage.channel.send(exembed)
+		
 	} catch (err) {
 		catchERR(err, receivedMessage);
 	}
@@ -826,8 +848,8 @@ async function owoCommand(arguments, receivedMessage) {
 
         var Text = arguments.join(" ");
 
-        
-                receivedMessage.channel.send(owoify(Text));
+		receivedMessage.delete();
+        receivedMessage.channel.send(receivedMessage.author.toString() + " **says:** " + owoify(Text));
 
        
     } catch (err) {
@@ -846,8 +868,8 @@ async function gunCommand(arguments, receivedMessage) {
 		}
         
 
-
-		const canvas = Canvas.createCanvas(600, 512);
+		receivedMessage.delete();
+		const canvas = Canvas.createCanvas(620, 512);
 		const ctx = canvas.getContext('2d');
 		const avatar = await Canvas.loadImage(mentionedMember.displayAvatarURL({ format: 'jpg' }));
 		ctx.drawImage(avatar, 25, 25, 512, 512);
@@ -857,6 +879,7 @@ async function gunCommand(arguments, receivedMessage) {
 
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'gun.png');
 
+		receivedMessage.channel.send(`**Requested by:** ${receivedMessage.author.toString()}`);
 		receivedMessage.channel.send(attachment);
        
     } catch (err) {
@@ -873,10 +896,12 @@ async function triggerCommand(arguments, receivedMessage) {
 		{
 			mentionedMember = receivedMessage.author
 		}
-
+		receivedMessage.delete();
 		let avatar = mentionedMember.displayAvatarURL({ dynamic: false, format: 'png' });
         let image = await canvacord.Canvas.trigger(avatar);
         let attachment = new Discord.MessageAttachment(image, "triggered.gif");
+				
+		receivedMessage.channel.send(`**Requested by:** ${receivedMessage.author.toString()}`);
         return receivedMessage.channel.send(attachment);
         
 
@@ -885,6 +910,156 @@ async function triggerCommand(arguments, receivedMessage) {
         catchERR(err, receivedMessage);
     }
 }
+
+async function beautifulCommand(arguments, receivedMessage) {
+    try {
+
+		let mentionedMember = receivedMessage.mentions.users.first()
+
+        if(!mentionedMember) 
+		{
+			mentionedMember = receivedMessage.author
+		}
+		receivedMessage.delete();
+		let avatar = mentionedMember.displayAvatarURL({ dynamic: false, format: 'png' });
+        let image = await canvacord.Canvas.beautiful(avatar);
+        let attachment = new Discord.MessageAttachment(image, "beautiful.gif");
+				
+		receivedMessage.channel.send(`**Requested by:** ${receivedMessage.author.toString()}`);
+        return receivedMessage.channel.send(attachment);
+        
+
+       
+    } catch (err) {
+        catchERR(err, receivedMessage);
+    }
+}
+
+async function ripCommand(arguments, receivedMessage) {
+    try {
+
+		let mentionedMember = receivedMessage.mentions.users.first()
+
+        if(!mentionedMember) 
+		{
+			mentionedMember = receivedMessage.author
+		}
+		receivedMessage.delete();
+		let avatar = mentionedMember.displayAvatarURL({ dynamic: false, format: 'png' });
+        let image = await canvacord.Canvas.rip(avatar);
+        let attachment = new Discord.MessageAttachment(image, "rip.png");
+				
+		receivedMessage.channel.send(`**Requested by:** ${receivedMessage.author.toString()}`);
+        return receivedMessage.channel.send(attachment);
+        
+
+       
+    } catch (err) {
+        catchERR(err, receivedMessage);
+    }
+}
+
+async function slapimgCommand(arguments, receivedMessage) {
+    try {
+
+		let mentionedMember = receivedMessage.mentions.users.first()
+		let author = receivedMessage.author
+
+		if (!mentionedMember){
+			receivedMessage.channel.send("you didnt say who you wanted too slap");
+			return;
+		}
+		receivedMessage.delete();
+		let avatar = mentionedMember.displayAvatarURL({ dynamic: false, format: 'png' });
+		let aavatar = author.displayAvatarURL({ dynamic: false, format: 'png' });
+        let image = await canvacord.Canvas.slap(aavatar, avatar);
+        let attachment = new Discord.MessageAttachment(image, "slap.png");
+				
+		receivedMessage.channel.send(`**Requested by:** ${receivedMessage.author.toString()}`);
+        return receivedMessage.channel.send(attachment);
+        
+
+       
+    } catch (err) {
+        catchERR(err, receivedMessage);
+    }
+}
+
+async function spankCommand(arguments, receivedMessage) {
+    try {
+
+		let mentionedMember = receivedMessage.mentions.users.first()
+		let author = receivedMessage.author
+
+		if (!mentionedMember){
+			receivedMessage.channel.send("you didnt say who you wanted too spank");
+			return;
+		}
+		receivedMessage.delete();
+		let avatar = mentionedMember.displayAvatarURL({ dynamic: false, format: 'png' });
+		let aavatar = author.displayAvatarURL({ dynamic: false, format: 'png' });
+        let image = await canvacord.Canvas.spank(aavatar, avatar);
+        let attachment = new Discord.MessageAttachment(image, "spank.png");
+				
+		receivedMessage.channel.send(`**Requested by:** ${receivedMessage.author.toString()}`);
+        return receivedMessage.channel.send(attachment);
+        
+
+       
+    } catch (err) {
+        catchERR(err, receivedMessage);
+    }
+}
+
+async function wantedCommand(arguments, receivedMessage) {
+    try {
+
+		let mentionedMember = receivedMessage.mentions.users.first()
+
+        if(!mentionedMember) 
+		{
+			mentionedMember = receivedMessage.author
+		}
+		receivedMessage.delete();
+		let avatar = mentionedMember.displayAvatarURL({ dynamic: false, format: 'png' });
+        let image = await canvacord.Canvas.wanted(avatar);
+        let attachment = new Discord.MessageAttachment(image, "wanted.png");
+		
+		receivedMessage.channel.send(`**Requested by:** ${receivedMessage.author.toString()}`);
+        return receivedMessage.channel.send(attachment);
+        
+
+       
+    } catch (err) {
+        catchERR(err, receivedMessage);
+    }
+}
+
+async function wastedCommand(arguments, receivedMessage) {
+    try {
+
+		let mentionedMember = receivedMessage.mentions.users.first()
+
+        if(!mentionedMember) 
+		{
+			mentionedMember = receivedMessage.author
+		}
+		receivedMessage.delete();
+		let avatar = mentionedMember.displayAvatarURL({ dynamic: false, format: 'png' });
+        let image = await canvacord.Canvas.wasted(avatar);
+        let attachment = new Discord.MessageAttachment(image, "wasted.png");
+		
+		receivedMessage.channel.send(`**Requested by:** ${receivedMessage.author.toString()}`);
+        return receivedMessage.channel.send(attachment);
+        
+
+       
+    } catch (err) {
+        catchERR(err, receivedMessage);
+    }
+}
+
+
 
 async function reasonCommand(arguments, receivedMessage) {
     try {
@@ -897,7 +1072,7 @@ async function reasonCommand(arguments, receivedMessage) {
 		}
         
 
-
+		receivedMessage.delete();
 		const canvas = Canvas.createCanvas(359, 810);
 		const ctx = canvas.getContext('2d');
 		const reason = await Canvas.loadImage('../Misato/imgs/reason.png');
@@ -907,7 +1082,8 @@ async function reasonCommand(arguments, receivedMessage) {
 		ctx.drawImage(avatar, 25, 400, 140, 140);		
 
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'reason.png');
-
+		
+		receivedMessage.channel.send(`**Requested by:** ${receivedMessage.author.toString()}`);
 		receivedMessage.channel.send(attachment);
        
     } catch (err) {
@@ -926,7 +1102,7 @@ async function yeetCommand(arguments, receivedMessage) {
 		}
         
 
-
+		receivedMessage.delete();
 		const canvas = Canvas.createCanvas(512, 512);
 		const ctx = canvas.getContext('2d');
 		const reason = await Canvas.loadImage('../Misato/imgs/yeet.jpg');
@@ -936,7 +1112,8 @@ async function yeetCommand(arguments, receivedMessage) {
 		ctx.drawImage(avatar, 280, 230, 120, 120);		
 
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'reason.png');
-
+		
+		receivedMessage.channel.send(`**Requested by:** ${receivedMessage.author.toString()}`);
 		receivedMessage.channel.send(attachment);
        
     } catch (err) {
@@ -955,7 +1132,7 @@ async function licenseCommand(arguments, receivedMessage) {
 		}
         
 
-
+		receivedMessage.delete();
 		const canvas = Canvas.createCanvas(512, 512);
 		const ctx = canvas.getContext('2d');
 		const license = await Canvas.loadImage('../Misato/imgs/license.png');
@@ -965,7 +1142,8 @@ async function licenseCommand(arguments, receivedMessage) {
 		ctx.drawImage(avatar, 5, 230, 120, 120);		
 
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'license.png');
-
+		
+		receivedMessage.channel.send(`**Requested by:** ${receivedMessage.author.toString()}`);
 		receivedMessage.channel.send(attachment);
        
     } catch (err) {
@@ -984,7 +1162,7 @@ async function jailCommand(arguments, receivedMessage) {
 		}
         
 
-
+		receivedMessage.delete();
 		const canvas = Canvas.createCanvas(600, 512);
 		const ctx = canvas.getContext('2d');
 		const avatar = await Canvas.loadImage(mentionedMember.displayAvatarURL({ format: 'jpg' }));
@@ -994,7 +1172,8 @@ async function jailCommand(arguments, receivedMessage) {
 		ctx.drawImage(jail, 25, 25, 512, 512);
 
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'jail.png');
-
+		
+		receivedMessage.channel.send(`**Requested by:** ${receivedMessage.author.toString()}`);
 		receivedMessage.channel.send(attachment);
        
     } catch (err) {
@@ -1013,7 +1192,7 @@ async function whymaskCommand(arguments, receivedMessage) {
 		}
         
 
-
+		receivedMessage.delete();
 		const canvas = Canvas.createCanvas(600, 512);
 		const ctx = canvas.getContext('2d');
 		
@@ -1029,7 +1208,8 @@ async function whymaskCommand(arguments, receivedMessage) {
 		ctx.drawImage(avatar, 60, 330, 120, 120);
 
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'why.png');
-
+		
+		receivedMessage.channel.send(`**Requested by:** ${receivedMessage.author.toString()}`);
 		receivedMessage.channel.send(attachment);
        
     } catch (err) {
@@ -1040,6 +1220,7 @@ async function whymaskCommand(arguments, receivedMessage) {
 async function pspsCommand(arguments, receivedMessage) {
     try {
 
+
 		let mentionedMember = receivedMessage.mentions.users.first()
 
         if(!mentionedMember) 
@@ -1048,7 +1229,8 @@ async function pspsCommand(arguments, receivedMessage) {
 		}
         
 
-
+		
+		receivedMessage.delete();
 		const canvas = Canvas.createCanvas(600, 512);
 		const ctx = canvas.getContext('2d');
 		
@@ -1065,6 +1247,7 @@ async function pspsCommand(arguments, receivedMessage) {
 
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'psps.png');
 
+		receivedMessage.channel.send(`**Requested by:** ${receivedMessage.author.toString()}`);
 		receivedMessage.channel.send(attachment);
        
     } catch (err) {
@@ -1083,7 +1266,7 @@ async function gayCommand(arguments, receivedMessage) {
 		}
         
 
-
+		receivedMessage.delete();
 		const canvas = Canvas.createCanvas(600, 512);
 		const ctx = canvas.getContext('2d');
 		const avatar = await Canvas.loadImage(mentionedMember.displayAvatarURL({ format: 'jpg' }));
@@ -1094,6 +1277,7 @@ async function gayCommand(arguments, receivedMessage) {
 
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'gay.png');
 
+		receivedMessage.channel.send(`**Requested by:** ${receivedMessage.author.toString()}`);
 		receivedMessage.channel.send(attachment);
        
     } catch (err) {
@@ -2005,10 +2189,7 @@ async function infoCommand(arguments, receivedMessage) {
 					'https://media2.giphy.com/media/1ynCEtlgMPAeNAqdnu/source.gif'
 				)
 				.setAuthor(`${myUser.username}`, `${myUser.avatarURL()}`)
-				.setDescription(`Need help? Here are my Developers! 🥰 
-
-**Pain**
-🧑‍💻 <@${pain}>
+				.setDescription(`Need help? Here are my Developers! 🥰  
 
 **Zoe**
 👩‍💻 <@${zoe}>
