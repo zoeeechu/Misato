@@ -1,8 +1,8 @@
 const Client = require('discord.js');
 const mongoose = require('mongoose');
-const mongo = require('../Misato/mongo.js')
-require('../Misato/index.js')
-const profileSchema = require('../Misato/profile_schema.js')
+const mongo = require(__dirname + '/mongo.js')
+require(__dirname + '/index.js')
+const profileSchema = require(__dirname + '/profile_schema.js')
 
 const coinsCache = {}
 

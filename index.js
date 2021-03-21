@@ -2,17 +2,20 @@ const Discord = require('discord.js');
 
 const client = new Discord.Client();
 const fetch = require('node-fetch');
-const imgs = require("../Misato/imgs/imgs.json");
-const boobs = require("../Misato/imgs/boobs.json");
-const bdsm = require("../Misato/imgs/BDSM.json");
-const mongo = require('../Misato/mongo.js');
+const imgs = require(__dirname + "/imgs/imgs.json");
+const boobs = require(__dirname + "/imgs/boobs.json");
+const bdsm = require(__dirname + "/imgs/BDSM.json");
+const mongo = require(__dirname + '/mongo.js');
 const mongoose = require('mongoose');
 const owoify = require('owoify-js').default
 const Canvas = require('canvas');
 const canvacord = require("canvacord");
-const dailyRewardsSchema = require('../Misato/daily_rewards_schema.js');
+const dailyRewardsSchema = require(__dirname + '/daily_rewards_schema.js');
 const { author } = require('canvacord');
+DisTube = require('distube');
+const reverseImageSearch = require('reverse-image-search-google')
 
+client.distube = new DisTube(client, { searchSongs: false, emitNewSongOnly: true });
 
 
 
@@ -65,6 +68,8 @@ let  claimedCache = []
 			setTimeout(clearCache, 1000 * 60 * 10) // 10 mins
 		}
 		clearCache()
+
+		
 
 
 
@@ -297,6 +302,27 @@ async function processCommand(receivedMessage) {
 			case 'beautiful':
 				beautifulCommand(arguments, receivedMessage);
 				break;
+			case 'play':
+				playCommand(arguments, receivedMessage);
+				break;
+			case 'stop':
+				stopCommand(arguments, receivedMessage);
+				break;
+			case 'loop':
+				loopCommand(arguments, receivedMessage);
+				break;
+			case 'skip':
+				skipCommand(arguments, receivedMessage);
+				break;
+			case 'queue':
+				queueCommand(arguments, receivedMessage);
+				break;
+			case 'ship':
+				shipCommand(arguments, receivedMessage);
+				break;
+			case 'search':
+				searchCommand(arguments, receivedMessage);
+				break;
 			
 			default:
 				receivedMessage.channel.send('not a command');
@@ -342,7 +368,7 @@ async function helpCommand(arguments, receivedMessage) {
 			.setDescription("Here's a list of all the commands my prefix is `S!` Master ❤️")
 			.addField("⠀", "⠀", false)
 			.addField("  Fun 🎲", " `meme` `cat` `dog` `avatar` `owo`", false)// `cat` `dog` `neko` `meme` `search` `needlove` `needhelp` `cookie` `duel`
-			.addField("  Image 📷", " `gun` `jail` `gay` `whymask` `psps` `reason` `yeet` `license` `trigger` `wanted` `rip` `slap2` `spank` `wasted` `beautiful`", false)
+			.addField("  Image 📷", " `gun` `jail` `gay` `whymask` `psps` `reason` `yeet` `license` `trigger` `wanted` `rip` `slap2` `spank` `wasted` `beautiful` `ship`", false)
 			.addField("  Hentai 💦", " `hentai` `pussy` `yuri` `boobs` `futa` `anal` `femdom` `solo` `feet` `yaoi` `threesome` `BDSM`", false)
 			.addField("  Porn 🍑", " `rboobs`", false)
 			.addField("  Economy 💰", " `daily`", false)
@@ -508,6 +534,159 @@ async function catCommand(arguments, receivedMessage) {
 
 }
 
+async function searchCommand(arguments, receivedMessage) {
+
+
+	try {
+		const image = arguments[0];
+
+		const doSomething = (results) => {
+
+			let embed = new Discord.MessageEmbed()
+					.setColor([255, 153, 255])
+					.setTitle("Visually similar images")
+					.setDescription(results[1].title)
+					.setURL(results[1].url)
+			
+			receivedMessage.channel.send(embed);
+			console.log(results)
+		  }
+		  
+		  reverseImageSearch(image, doSomething)
+		
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+
+
+async function playCommand(arguments, receivedMessage) {
+
+
+	try {
+		const zoe = "427835914052567040"
+
+		if (receivedMessage.author.id === zoe)
+		{
+			client.distube.play(receivedMessage, arguments.join(" "));
+		}else 
+		{
+			receivedMessage.reply(`**Your not zoe!** sorry only zoe is allowed too use this command`)
+			return;
+		}
+		
+
+
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+async function stopCommand(arguments, receivedMessage) {
+
+
+	try {
+		const zoe = "427835914052567040"
+
+		if (receivedMessage.author.id === zoe)
+		{
+			client.distube.stop(receivedMessage);
+		}else 
+		{
+			receivedMessage.reply(`**Your not zoe!** sorry only zoe is allowed too use this command`)
+			return;
+		}
+		
+
+
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+async function loopCommand(arguments, receivedMessage) {
+
+
+	try {
+		const zoe = "427835914052567040"
+
+		if (receivedMessage.author.id === zoe)
+		{
+			client.distube.setRepeatMode(receivedMessage, parseInt(args[0]));
+		}else 
+		{
+			receivedMessage.reply(`**Your not zoe!** sorry only zoe is allowed too use this command`)
+			return;
+		}
+		
+
+
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+async function skipCommand(arguments, receivedMessage) {
+
+
+	try {
+		const zoe = "427835914052567040"
+
+		if (receivedMessage.author.id === zoe)
+		{
+			client.distube.skip(receivedMessage);
+		}else 
+		{
+			receivedMessage.reply(`**Your not zoe!** sorry only zoe is allowed too use this command`)
+			return;
+		}
+		
+
+
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+async function queueCommand(arguments, receivedMessage) {
+
+
+	try {
+		const zoe = "427835914052567040"
+
+		if (receivedMessage.author.id === zoe)
+		{
+			let queue = client.distube.getQueue(receivedMessage);
+        	receivedMessage.channel.send('Current queue:\n' + queue.songs.map((song, id) =>
+            `**${id + 1}**. ${song.name} - \`${song.formattedDuration}\``
+       		 ).slice(0, 10).join("\n"));
+		}else 
+		{
+			receivedMessage.reply(`**Your not zoe!** sorry only zoe is allowed too use this command`)
+			return;
+		}
+		
+
+
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+
 async function dabalCommand(arguments, receivedMessage) {
 	try {
 		
@@ -529,7 +708,7 @@ async function dabalCommand(arguments, receivedMessage) {
 		await mongo().then(async mongoose => {
 			try {
 				const reply = ("You have already claimed your daily <:CutePeach:817591031880744988>")
-				const economy = require("../Misato/economy.js")
+				const economy = require(__dirname + "/economy.js")
 				
 				const results = await dailyRewardsSchema.findOne(obj)
 				console.log('RESULTS:', results)
@@ -601,7 +780,7 @@ async function dabalCommand(arguments, receivedMessage) {
 
 async function balCommand(arguments, receivedMessage) {
 	try {
-		const economy = require("../Misato/economy.js")
+		const economy = require(__dirname + "/economy.js")
 		target = receivedMessage.mentions.users.first()
 		const person = receivedMessage.mentions.users.first()
 		if (!person) {
@@ -636,7 +815,7 @@ async function abalCommand(arguments, receivedMessage) {
 	try {
 		if (receivedMessage.member.hasPermission("ADMINISTRATOR")) {
 
-			const economy = require("../Misato/economy.js")
+			const economy = require(__dirname + "/economy.js")
 			const mention = receivedMessage.mentions.users.first()
 			if (!mention) {
 				receivedMessage.reply('You did not say who you wanted to add to')
@@ -678,7 +857,7 @@ async function sbalCommand(arguments, receivedMessage) {
 		if (receivedMessage.member.hasPermission("ADMINISTRATOR")) {
 
 
-			const economy = require("../Misato/economy.js")
+			const economy = require(__dirname + "/economy.js")
 			const mention = receivedMessage.mentions.users.first()
 			if (!mention) {
 				receivedMessage.reply('You did not say who you wanted to add to')
@@ -874,7 +1053,7 @@ async function gunCommand(arguments, receivedMessage) {
 		const avatar = await Canvas.loadImage(mentionedMember.displayAvatarURL({ format: 'jpg' }));
 		ctx.drawImage(avatar, 25, 25, 512, 512);
 
-		const Gun = await Canvas.loadImage('../Misato/imgs/c75.png');
+		const Gun = await Canvas.loadImage(__dirname + '/imgs/c75.png');
 		ctx.drawImage(Gun, 350, 200, 300, 300);
 
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'gun.png');
@@ -985,6 +1164,74 @@ async function slapimgCommand(arguments, receivedMessage) {
     }
 }
 
+async function shipCommand(arguments, receivedMessage) {
+    try {
+
+		const mentions = receivedMessage.mentions.users.first(3);
+		const firstMention = mentions[0];
+		const secondMention = mentions[1];
+		let author = receivedMessage.author
+		let precent = (Math.floor(Math.random() * 100) + 1)
+
+		if (firstMention == author){
+			return receivedMessage.channel.send("you cant tag yourself silly");
+		}
+
+		if (!firstMention)
+		{
+			return receivedMessage.channel.send("You didnt tag anyone!");
+		}
+
+		if (!secondMention){
+
+			const canvas = Canvas.createCanvas(960, 320);
+		const ctx = canvas.getContext('2d');
+		const avatar1 = await Canvas.loadImage(author.displayAvatarURL({ format: 'jpg' }));
+		const avatar2 = await Canvas.loadImage(firstMention.displayAvatarURL({ format: 'jpg' }));
+		const ship = await Canvas.loadImage(__dirname + '/imgs/ship.png');
+
+		ctx.drawImage(ship, 0, 0, 960, 320);
+		ctx.drawImage(avatar1, 25, 25, 260, 260);
+		ctx.drawImage(avatar2, 670, 25, 260, 260);
+		ctx.font = '70px Impact'
+		ctx.fillText(`${precent}%`, 420, 180)
+
+		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'ship.png');
+        
+				
+		receivedMessage.channel.send(`**Requested by:** ${receivedMessage.author.toString()}`);
+		//receivedMessage.channel.send(`${precent}%`);
+        return receivedMessage.channel.send(attachment);
+
+			
+		}else {
+
+		const canvas = Canvas.createCanvas(960, 320);
+		const ctx = canvas.getContext('2d');
+		const avatar1 = await Canvas.loadImage(firstMention.displayAvatarURL({ format: 'jpg' }));
+		const avatar2 = await Canvas.loadImage(secondMention.displayAvatarURL({ format: 'jpg' }));
+		const ship = await Canvas.loadImage(__dirname + '/imgs/ship.png');
+
+		ctx.drawImage(ship, 0, 0, 960, 320);
+		ctx.drawImage(avatar1, 25, 25, 260, 260);
+		ctx.drawImage(avatar2, 670, 25, 260, 260);
+		ctx.font = '70px Impact'
+		ctx.fillText(`${precent}%`, 420, 180)
+
+		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'ship.png');
+        
+				
+		receivedMessage.channel.send(`**Requested by:** ${receivedMessage.author.toString()}`);
+		//receivedMessage.channel.send(`${precent}%`);
+        return receivedMessage.channel.send(attachment);
+		
+		}
+	
+    } catch (err) {
+        catchERR(err, receivedMessage);
+    }
+}
+
 async function spankCommand(arguments, receivedMessage) {
     try {
 
@@ -1075,7 +1322,7 @@ async function reasonCommand(arguments, receivedMessage) {
 		receivedMessage.delete();
 		const canvas = Canvas.createCanvas(359, 810);
 		const ctx = canvas.getContext('2d');
-		const reason = await Canvas.loadImage('../Misato/imgs/reason.png');
+		const reason = await Canvas.loadImage(__dirname + '/imgs/reason.png');
 		ctx.drawImage(reason, 0, 0, 359, 810);
 
 		const avatar = await Canvas.loadImage(mentionedMember.displayAvatarURL({ format: 'jpg' }));
@@ -1105,7 +1352,7 @@ async function yeetCommand(arguments, receivedMessage) {
 		receivedMessage.delete();
 		const canvas = Canvas.createCanvas(512, 512);
 		const ctx = canvas.getContext('2d');
-		const reason = await Canvas.loadImage('../Misato/imgs/yeet.jpg');
+		const reason = await Canvas.loadImage(__dirname + '/imgs/yeet.jpg');
 		ctx.drawImage(reason, 0, 0, 512, 512);
 		ctx.rotate(-0.3)
 		const avatar = await Canvas.loadImage(mentionedMember.displayAvatarURL({ format: 'jpg' }));
@@ -1135,7 +1382,7 @@ async function licenseCommand(arguments, receivedMessage) {
 		receivedMessage.delete();
 		const canvas = Canvas.createCanvas(512, 512);
 		const ctx = canvas.getContext('2d');
-		const license = await Canvas.loadImage('../Misato/imgs/license.png');
+		const license = await Canvas.loadImage(__dirname + '/imgs/license.png');
 		ctx.drawImage(license, 0, 0, 512, 512);
 		ctx.rotate(-0.3)
 		const avatar = await Canvas.loadImage(mentionedMember.displayAvatarURL({ format: 'jpg' }));
@@ -1168,7 +1415,7 @@ async function jailCommand(arguments, receivedMessage) {
 		const avatar = await Canvas.loadImage(mentionedMember.displayAvatarURL({ format: 'jpg' }));
 		ctx.drawImage(avatar, 25, 25, 512, 512);
 
-		const jail = await Canvas.loadImage('../Misato/imgs/jail.png');
+		const jail = await Canvas.loadImage(__dirname + '/imgs/jail.png');
 		ctx.drawImage(jail, 25, 25, 512, 512);
 
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'jail.png');
@@ -1197,7 +1444,7 @@ async function whymaskCommand(arguments, receivedMessage) {
 		const ctx = canvas.getContext('2d');
 		
 
-		const mask = await Canvas.loadImage('../Misato/imgs/whymask.jpg');
+		const mask = await Canvas.loadImage(__dirname + '/imgs/whymask.jpg');
 		ctx.drawImage(mask, 25, 25, 512, 512);
 
 		ctx.beginPath();
@@ -1235,7 +1482,7 @@ async function pspsCommand(arguments, receivedMessage) {
 		const ctx = canvas.getContext('2d');
 		
 
-		const mask = await Canvas.loadImage('../Misato/imgs/psps.jpg');
+		const mask = await Canvas.loadImage(__dirname + '/imgs/psps.jpg');
 		ctx.drawImage(mask, 25, 25, 512, 512);
 
 		ctx.beginPath();
@@ -1272,7 +1519,7 @@ async function gayCommand(arguments, receivedMessage) {
 		const avatar = await Canvas.loadImage(mentionedMember.displayAvatarURL({ format: 'jpg' }));
 		ctx.drawImage(avatar, 25, 25, 512, 512);
 		ctx.globalAlpha = 0.5
-		const jail = await Canvas.loadImage('../Misato/imgs/gay.png');
+		const jail = await Canvas.loadImage(__dirname + '/imgs/gay.png');
 		ctx.drawImage(jail, 25, 25, 512, 512);
 
 		const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'gay.png');
@@ -3012,4 +3259,4 @@ async function roleCommand(arguments, receivedMessage) {
 }*/
 //please do not touch the token
 // ^^ its grabbing the token form the .env file
-client.login(prefix);
+client.login("Nzk5NDgwNTg1NjYzNTQ1Mzk1.YAEMUQ.um3t7oE1UEU9tXh6RoFFyH2jKEE");
