@@ -15,6 +15,9 @@ DisTube = require('distube');
 const reverseImageSearch = require('reverse-image-search-google')
 const snekfetch = require('snekfetch');
 const akaneko = require('akaneko');
+const NSFW = require("discord-nsfw");
+const superagent = require('superagent');
+const nsfw = new NSFW();
 
 client.distube = new DisTube(client, { searchSongs: false, emitNewSongOnly: true });
 
@@ -363,6 +366,18 @@ async function processCommand(receivedMessage) {
 			case 'foxgirl':
 				foxCommand(arguments, receivedMessage);
 				break;
+			case 'rpussy':
+				rpussyCommand(arguments, receivedMessage);
+				break;
+			case 'porngif':
+				porngifCommand(arguments, receivedMessage);
+				break;
+			case 'rass':
+				rassCommand(arguments, receivedMessage);
+				break;
+			case 'ranal':
+				ranalCommand(arguments, receivedMessage);
+				break;
 			default:
 				receivedMessage.channel.send('not a command');
 		}
@@ -409,7 +424,7 @@ async function helpCommand(arguments, receivedMessage) {
 			.addField("  Fun 🎲", " `meme` `cat` `dog` `avatar` `owo` ", false)// `cat` `dog` `neko` `meme` `search` `needlove` `needhelp` `cookie` `duel`
 			.addField("  Image 📷", " `gun` `jail` `gay` `whymask` `psps` `reason` `yeet` `license` `trigger` `wanted` `rip` `slap2` `spank` `wasted` `beautiful` `ship` `tweet`", false)
 			.addField("  Hentai 💦", " `hentai` `pussy` `yuri` `boobs` `futa` `anal` `femdom` `solo` `feet` `yaoi` `threesome` `BDSM` `maid` `orgy` `panties` `school` `tentacles` `thighs` `uniform` `zettaiRyouiki` `doujin` `foxgirl`", false)
-			.addField("  Porn 🍑", " `rboobs`", false)
+			.addField("  Porn 🍑", " `rboobs` `rpussy` `porngif` `ass` `anal`", false)
 			.addField("  Economy 💰", " `daily`", false)
 			.addField("  Actions ✨", " `hug` `pat` `kiss` `cuddle` `bj` `punch` `bite` `stab` `revive` `slap` `carry` `lick` `hf` `boop` `fuck`", false) // `pat` `carry` `kiss` `lick` `boop` `cuddle` `punch` `bite` `revive` `slap` `throw` `happybirthday` `stab` `hf` `propose` `glomp`
 			.addField("  Emotes 😇", " `cum` `smile` `hide` `eat` `cry`  `drink` `sleep` `run` `baka` `dance` `smh`", false)//`run` `sleep` `drink` `eat` `cry` `hide` `smile` `dance` `baka` `gm` `smh` 
@@ -1102,6 +1117,10 @@ async function updateCommand(arguments, receivedMessage) {
 				.addField("`9.`", "zettairyouiki command", false)
 				.addField("`10.`", "doujin command", false)
 				.addField("`11.`", "foxgirl command", false)
+				.addField("`12.`", "rpussy command", false)
+				.addField("`13.`", "porngif command", false)
+				.addField("`14.`", "ranal command", false)
+				.addField("`15.`", "rass command", false)
 			
 
 
@@ -2057,30 +2076,107 @@ async function bakaCommand(arguments, receivedMessage) {
 async function rboobsCommand(arguments, receivedMessage) {
 	try {
 
-		const rando = boobs.boobs[Math.floor(Math.random() * boobs.boobs.length)];
+		
 
-		if (rando == 0) {
-			rando == 1
+		const id = [Math.floor(Math.random() * 10930)];
+    	const res = await superagent.get(`http://api.oboobs.ru/boobs/${id}`);
+   	 	const preview = res.body[0]["PREVIEW".toLowerCase()];
+    	const image = `http://media.oboobs.ru/${preview}`;
 
 			let hugembed = new Discord.MessageEmbed()
 				.setColor([255, 153, 255])
 				.setTitle("jiggles")
-				.setImage(rando)
+				.setImage(image)
 
 			receivedMessage.channel.send(hugembed);
-		}
+		
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
 
 
-		let hugembed = new Discord.MessageEmbed()
-			.setColor([255, 153, 255])
-			.setTitle("jiggles")
-			.setImage(rando)
+}
+
+async function rpussyCommand(arguments, receivedMessage) {
+	try {
+
+		
+
+		const { body } = await superagent.get(
+			"https://nekobot.xyz/api/image?type=pussy"
+		  );
+			let hugembed = new Discord.MessageEmbed()
+				.setColor([255, 153, 255])
+				.setTitle("drips~")
+				.setImage(body.message)
+
+			receivedMessage.channel.send(hugembed);
+		
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
 
 
+}
+
+async function rassCommand(arguments, receivedMessage) {
+	try {
+
+		
+
+		const { body } = await superagent.get(
+			"https://nekobot.xyz/api/image?type=ass"
+		  );
+			let hugembed = new Discord.MessageEmbed()
+				.setColor([255, 153, 255])
+				.setTitle("drips~")
+				.setImage(body.message)
+
+			receivedMessage.channel.send(hugembed);
+		
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
 
 
-		receivedMessage.channel.send(hugembed);
+}
 
+async function ranalCommand(arguments, receivedMessage) {
+	try {
+
+		
+
+		const { body } = await superagent.get(
+			"https://nekobot.xyz/api/image?type=anal"
+		  );
+			let hugembed = new Discord.MessageEmbed()
+				.setColor([255, 153, 255])
+				.setTitle("drips~")
+				.setImage(body.message)
+
+			receivedMessage.channel.send(hugembed);
+		
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+async function porngifCommand(arguments, receivedMessage) {
+	try {
+
+		
+
+		const { body } = await superagent.get(
+			"https://nekobot.xyz/api/image?type=pgif"
+		  );
+			let hugembed = new Discord.MessageEmbed()
+				.setColor([255, 153, 255])
+				.setTitle("Here ya go~")
+				.setImage(body.message)
+
+			receivedMessage.channel.send(hugembed);
+		
 	} catch (err) {
 		catchERR(err, receivedMessage);
 	}
