@@ -330,7 +330,39 @@ async function processCommand(receivedMessage) {
 			case 'porn':
 				pornCommand(arguments, receivedMessage);
 				break;
-			
+			case 'updates':
+				updateCommand(arguments, receivedMessage);
+				break;
+			case 'maid':
+				maidCommand(arguments, receivedMessage);
+				break;
+			case 'orgy':
+				orgyCommand(arguments, receivedMessage);
+				break;
+			case 'panties':
+				pantiesCommand(arguments, receivedMessage);
+				break;
+			case 'school':
+				schoolCommand(arguments, receivedMessage);
+				break;
+			case 'tentacles':
+				tentaclesCommand(arguments, receivedMessage);
+				break;
+			case 'thighs':
+				thighsCommand(arguments, receivedMessage);
+				break;
+			case 'uniform':
+				uniformCommand(arguments, receivedMessage);
+				break;
+			case 'zettairyouiki':
+				zettaiCommand(arguments, receivedMessage);
+				break;
+			case 'doujin':
+				doujinCommand(arguments, receivedMessage);
+				break;
+			case 'foxgirl':
+				foxCommand(arguments, receivedMessage);
+				break;
 			default:
 				receivedMessage.channel.send('not a command');
 		}
@@ -376,13 +408,13 @@ async function helpCommand(arguments, receivedMessage) {
 			.addField("⠀", "⠀", false)
 			.addField("  Fun 🎲", " `meme` `cat` `dog` `avatar` `owo` ", false)// `cat` `dog` `neko` `meme` `search` `needlove` `needhelp` `cookie` `duel`
 			.addField("  Image 📷", " `gun` `jail` `gay` `whymask` `psps` `reason` `yeet` `license` `trigger` `wanted` `rip` `slap2` `spank` `wasted` `beautiful` `ship` `tweet`", false)
-			.addField("  Hentai 💦", " `hentai` `pussy` `yuri` `boobs` `futa` `anal` `femdom` `solo` `feet` `yaoi` `threesome` `BDSM`", false)
+			.addField("  Hentai 💦", " `hentai` `pussy` `yuri` `boobs` `futa` `anal` `femdom` `solo` `feet` `yaoi` `threesome` `BDSM` `maid` `orgy` `panties` `school` `tentacles` `thighs` `uniform` `zettaiRyouiki` `doujin` `foxgirl`", false)
 			.addField("  Porn 🍑", " `rboobs`", false)
 			.addField("  Economy 💰", " `daily`", false)
 			.addField("  Actions ✨", " `hug` `pat` `kiss` `cuddle` `bj` `punch` `bite` `stab` `revive` `slap` `carry` `lick` `hf` `boop` `fuck`", false) // `pat` `carry` `kiss` `lick` `boop` `cuddle` `punch` `bite` `revive` `slap` `throw` `happybirthday` `stab` `hf` `propose` `glomp`
 			.addField("  Emotes 😇", " `cum` `smile` `hide` `eat` `cry`  `drink` `sleep` `run` `baka` `dance` `smh`", false)//`run` `sleep` `drink` `eat` `cry` `hide` `smile` `dance` `baka` `gm` `smh` 
 			.addField("  Moderation ⚙️", " `Purge` `addbal` `subbal` `whois`", false)
-			.addField("  Other 💫", " `info` ", false)
+			.addField("  Other 💫", " `info` `updates`", false)
 
 
 		let warning = new Discord.MessageEmbed()
@@ -1051,14 +1083,256 @@ async function smhCommand(arguments, receivedMessage) {
 
 }
 
+async function updateCommand(arguments, receivedMessage) {
+
+	try {
+		 
+			let hugembed = new Discord.MessageEmbed()
+				.setColor([255, 153, 255])
+				.setTitle("Updates")
+				.setDescription("`==Added==`")
+				.addField("`1.`", "Maid command", false)
+				.addField("`2.`", "Orgy command", false)
+				.addField("`3.`", "Panties command", false)
+				.addField("`4.`", "Panties command", false)
+				.addField("`5.`", "School command", false)
+				.addField("`6.`", "Tentacles command", false)
+				.addField("`7.`", "Thighs command", false)
+				.addField("`8.`", "Uniform command", false)
+				.addField("`9.`", "zettairyouiki command", false)
+				.addField("`10.`", "doujin command", false)
+				.addField("`11.`", "foxgirl command", false)
+			
+
+
+			receivedMessage.channel.send(hugembed);
+		
+		
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
 async function bdsmCommand(arguments, receivedMessage) {
 
 	try {
 		 
 			let hugembed = new Discord.MessageEmbed()
 				.setColor([255, 153, 255])
-				.setTitle("S-Senpai~")
+				.setTitle("K-kinky~")
 				.setImage(await akaneko.nsfw.bdsm())
+			
+
+
+			receivedMessage.channel.send(hugembed);
+		
+		
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+async function maidCommand(arguments, receivedMessage) {
+
+	try {
+		 
+			let hugembed = new Discord.MessageEmbed()
+				.setColor([255, 153, 255])
+				.setTitle("S-Senpai~")
+				.setImage(await akaneko.nsfw.maid())
+			
+
+
+			receivedMessage.channel.send(hugembed);
+		
+		
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+async function orgyCommand(arguments, receivedMessage) {
+
+	try {
+		 
+			let hugembed = new Discord.MessageEmbed()
+				.setColor([255, 153, 255])
+				.setTitle("O-oh my!")
+				.setImage(await akaneko.nsfw.orgy())
+			
+
+
+			receivedMessage.channel.send(hugembed);
+		
+		
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+async function foxCommand(arguments, receivedMessage) {
+
+	try {
+		 
+			let hugembed = new Discord.MessageEmbed()
+				.setColor([255, 153, 255])
+				.setTitle("who's a wittle good fox~")
+				.setImage(await akaneko.nsfw.foxgirl())
+			
+
+
+			receivedMessage.channel.send(hugembed);
+		
+		
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+async function doujinCommand(arguments, receivedMessage) {
+
+	try {
+		 
+			let hugembed = new Discord.MessageEmbed()
+				.setColor([255, 153, 255])
+				.setTitle("hands you doujin")
+				.setImage(await akaneko.nsfw.doujin())
+			
+
+
+			receivedMessage.channel.send(hugembed);
+		
+		
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+async function pantiesCommand(arguments, receivedMessage) {
+
+	try {
+		 
+			let hugembed = new Discord.MessageEmbed()
+				.setColor([255, 153, 255])
+				.setTitle("oop there was a gust of wind~")
+				.setImage(await akaneko.nsfw.panties())
+			
+
+
+			receivedMessage.channel.send(hugembed);
+		
+		
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+async function schoolCommand(arguments, receivedMessage) {
+
+	try {
+		 
+			let hugembed = new Discord.MessageEmbed()
+				.setColor([255, 153, 255])
+				.setTitle("B-BAKA~!")
+				.setImage(await akaneko.nsfw.school())
+			
+
+
+			receivedMessage.channel.send(hugembed);
+		
+		
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+async function tentaclesCommand(arguments, receivedMessage) {
+
+	try {
+		 
+			let hugembed = new Discord.MessageEmbed()
+				.setColor([255, 153, 255])
+				.setTitle("Slimyyy")
+				.setImage(await akaneko.nsfw.tentacles())
+			
+
+
+			receivedMessage.channel.send(hugembed);
+		
+		
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+async function thighsCommand(arguments, receivedMessage) {
+
+	try {
+		 
+			let hugembed = new Discord.MessageEmbed()
+				.setColor([255, 153, 255])
+				.setTitle("Ara ara~")
+				.setImage(await akaneko.nsfw.thighs())
+			
+
+
+			receivedMessage.channel.send(hugembed);
+		
+		
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+async function uniformCommand(arguments, receivedMessage) {
+
+	try {
+		 
+			let hugembed = new Discord.MessageEmbed()
+				.setColor([255, 153, 255])
+				.setTitle("Sexy~")
+				.setImage(await akaneko.nsfw.uniform())
+			
+
+
+			receivedMessage.channel.send(hugembed);
+		
+		
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+async function zettaiCommand(arguments, receivedMessage) {
+
+	try {
+		 
+			let hugembed = new Discord.MessageEmbed()
+				.setColor([255, 153, 255])
+				.setTitle("Sexy~")
+				.setImage(await akaneko.nsfw.zettaiRyouiki())
 			
 
 
