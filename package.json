@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@discordjs/opus": "^0.4.0",
+    "akaneko": "^5.0.1",
     "canvacord": "^5.1.0",
     "canvas": "^2.7.0",
     "discord.js": "^12.5.1",
@@ -13,6 +14,7 @@
     "owoify-js": "^1.0.7",
     "pm2": "^4.5.5",
     "reverse-image-search": "0.0.0",
-    "reverse-image-search-google": "^1.0.3"
+    "reverse-image-search-google": "^1.0.3",
+    "snekfetch": "^4.0.4"
   }
 }
