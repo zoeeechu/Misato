@@ -21,11 +21,8 @@ const nsfw = new NSFW();
 
 client.distube = new DisTube(client, { searchSongs: false, emitNewSongOnly: true });
 
-
-
-
 require('dotenv').config();
-const prefix = process.env.DISCORD_TOKEN;
+
 //https://nekos.life/api/v2/endpoints
 //for all the neko.llife api endpoints as reference
 
@@ -3697,4 +3694,4 @@ async function roleCommand(arguments, receivedMessage) {
 }*/
 //please do not touch the token
 // ^^ its grabbing the token form the .env file
-client.login("Nzk5NDgwNTg1NjYzNTQ1Mzk1.YAEMUQ.um3t7oE1UEU9tXh6RoFFyH2jKEE");
+client.login(process.env.DISCORD_TOKEN);
