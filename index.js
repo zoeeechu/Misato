@@ -1,5 +1,4 @@
 const Discord = require('discord.js');
-
 const client = new Discord.Client();
 const fetch = require('node-fetch');
 const imgs = require(__dirname + "/imgs/imgs.json");
@@ -11,15 +10,17 @@ const Canvas = require('canvas');
 const canvacord = require("canvacord");
 const dailyRewardsSchema = require(__dirname + '/daily_rewards_schema.js');
 const { author } = require('canvacord');
-DisTube = require('distube');
 const reverseImageSearch = require('reverse-image-search-google')
 const snekfetch = require('snekfetch');
 const akaneko = require('akaneko');
 const NSFW = require("discord-nsfw");
 const superagent = require('superagent');
 const nsfw = new NSFW();
+const DabiImages = require("dabi-images");
+const DabiClient = new DabiImages.Client();
+const R34 = new (require('r34api.js'));
 
-client.distube = new DisTube(client, { searchSongs: false, emitNewSongOnly: true });
+
 
 require('dotenv').config();
 
@@ -43,6 +44,8 @@ client.on('ready', async () => {
 
 
 	})
+
+	
 });
 async function catchERR(err, message) {
 	try {
@@ -321,9 +324,6 @@ async function processCommand(receivedMessage) {
 			case 'search':
 				searchCommand(arguments, receivedMessage);
 				break;
-			case 'tweet':
-				tweetCommand(arguments, receivedMessage);
-				break;
 			case 'whois':
 				whoisCommand(arguments, receivedMessage);
 				break;
@@ -375,6 +375,24 @@ async function processCommand(receivedMessage) {
 			case 'ranal':
 				ranalCommand(arguments, receivedMessage);
 				break;
+			case 'rpanties':
+				rpantiesCommand(arguments, receivedMessage);
+				break;
+			case 'rthighs':
+				rthighsCommand(arguments, receivedMessage);
+				break;
+			case 'r34random':
+				r34randomCommand(arguments, receivedMessage);
+				break;
+			case 'r34search':
+				r34searchCommand(arguments, receivedMessage);
+				break;
+			case 'lesbian':
+				lesbianCommand(arguments, receivedMessage);
+				break;
+			case 'gay':
+				gayCommand(arguments, receivedMessage);
+				break;
 			default:
 				receivedMessage.channel.send('not a command');
 		}
@@ -419,9 +437,9 @@ async function helpCommand(arguments, receivedMessage) {
 			.setDescription("Here's a list of all the commands my prefix is `S!` Master ❤️")
 			.addField("⠀", "⠀", false)
 			.addField("  Fun 🎲", " `meme` `cat` `dog` `avatar` `owo` ", false)// `cat` `dog` `neko` `meme` `search` `needlove` `needhelp` `cookie` `duel`
-			.addField("  Image 📷", " `gun` `jail` `gay` `whymask` `psps` `reason` `yeet` `license` `trigger` `wanted` `rip` `slap2` `spank` `wasted` `beautiful` `ship` `tweet`", false)
+			.addField("  Image 📷", " `gun` `jail` `gay` `whymask` `psps` `reason` `yeet` `license` `trigger` `wanted` `rip` `slap2` `spank` `wasted` `beautiful` `ship` ", false)
 			.addField("  Hentai 💦", " `hentai` `pussy` `yuri` `boobs` `futa` `anal` `femdom` `solo` `feet` `yaoi` `threesome` `BDSM` `maid` `orgy` `panties` `school` `tentacles` `thighs` `uniform` `zettaiRyouiki` `doujin` `foxgirl`", false)
-			.addField("  Porn 🍑", " `rboobs` `rpussy` `porngif` `ass` `anal`", false)
+			.addField("  Porn 🍑", " `rboobs` `rpussy` `porngif` `rass` `ranal` `rthighs` `rpanties` `r34random` `r34search` `lesbian`", false)
 			.addField("  Economy 💰", " `daily`", false)
 			.addField("  Actions ✨", " `hug` `pat` `kiss` `cuddle` `bj` `punch` `bite` `stab` `revive` `slap` `carry` `lick` `hf` `boop` `fuck`", false) // `pat` `carry` `kiss` `lick` `boop` `cuddle` `punch` `bite` `revive` `slap` `throw` `happybirthday` `stab` `hf` `propose` `glomp`
 			.addField("  Emotes 😇", " `cum` `smile` `hide` `eat` `cry`  `drink` `sleep` `run` `baka` `dance` `smh`", false)//`run` `sleep` `drink` `eat` `cry` `hide` `smile` `dance` `baka` `gm` `smh` 
@@ -590,6 +608,10 @@ async function searchCommand(arguments, receivedMessage) {
 
 	try {
 		const image = arguments[0];
+
+		if (!image){
+			receivedMessage.channel.send("**No Image provided**");
+		}
 	
 		const doSomething = (results) => {
 
@@ -736,6 +758,8 @@ async function queueCommand(arguments, receivedMessage) {
 }
 
 
+
+
 async function dabalCommand(arguments, receivedMessage) {
 	try {
 
@@ -743,7 +767,7 @@ async function dabalCommand(arguments, receivedMessage) {
 		const { id } = member
 
 		if (claimedCache.includes(id)) {
-			receivedMessage.reply(`You have already claimed your daily` + " <:CutePeach:817591031880744988>")
+			receivedMessage.reply(`You have already claimed your daily` + " :PeachCurrency:")
 			return
 		}
 
@@ -755,7 +779,7 @@ async function dabalCommand(arguments, receivedMessage) {
 
 		await mongo().then(async mongoose => {
 			try {
-				const reply = ("You have already claimed your daily <:CutePeach:817591031880744988>")
+				const reply = ("You have already claimed your daily :PeachCurrency:")
 				const economy = require(__dirname + "/economy.js")
 
 				const results = await dailyRewardsSchema.findOne(obj)
@@ -810,7 +834,7 @@ async function dabalCommand(arguments, receivedMessage) {
 
 				const newCoins = await economy.add_Dailycoins(guildId, userId, coins)
 
-				receivedMessage.reply(`You have claimed your daily` + " <:CutePeach:817591031880744988>")
+				receivedMessage.reply(`You have claimed your daily` + " :PeachCurrency:")
 			} finally {
 				mongoose.connection.close()
 			}
@@ -846,7 +870,7 @@ async function balCommand(arguments, receivedMessage) {
 		const coins = await economy.getCoins(guildId, userId)
 
 
-		receivedMessage.reply(`**That user has:** ${coins}` + " <:CutePeach:817591031880744988>")
+		receivedMessage.reply(`**That user has:** ${coins}` + " :PeachCurrency:")
 
 
 
@@ -858,24 +882,94 @@ async function balCommand(arguments, receivedMessage) {
 
 }
 
-async function pornCommand(arguments, receivedMessage) {
+async function lesbianCommand(arguments, receivedMessage) {
 	try {
-		const { body } = await snekfetch
-		.get('https://www.reddit.com/r/NSFW_GIF.json?sort=top&t=week')
-		.query({ limit: 800 });
-	const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
-	const randomnumber = Math.floor(Math.random() * allowed.length)
-	let embed = new Discord.MessageEmbed()
-	.setColor(0x00A2E8)
-	.setTitle(allowed[randomnumber].data.title)
-	.setDescription("Posted by: " + allowed[randomnumber].data.author)
-	.setImage(allowed[randomnumber].data.url)
-	.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
-	.setFooter("Memes provided by r/dankmemes")
-	receivedMessage.channel.send(embed)
+		
+
+		const { body } = await superagent.get(
+			"https://www.reddit.com/r/lesbians.json?sort=top&t=week"
+		  );
+
+		const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
+		const randomnumber = Math.floor(Math.random() * allowed.length)
+
+		let nekoembed = new Discord.MessageEmbed()
+			.setColor([255, 153, 255])
+			.setTitle(allowed[randomnumber].data.title)
+			.setDescription("Posted by: " + allowed[randomnumber].data.author)
+			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
+			.setURL(allowed[randomnumber].data.url)
+
+			let nekoembed2 = new Discord.MessageEmbed()
+			.setColor([255, 153, 255])
+			.setTitle(allowed[randomnumber].data.title)
+			.setDescription("Posted by: " + allowed[randomnumber].data.author)
+			.setImage(allowed[randomnumber].data.url)
+			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
+			.setURL(allowed[randomnumber].data.url)
+						
+
+			
+			if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/" || "https://www.redgifs.com/")){
+				receivedMessage.channel.send(nekoembed);
+				receivedMessage.channel.send(allowed[randomnumber].data.url);
+				
+			}else {
+				receivedMessage.channel.send(nekoembed2);
+				
+			}
+			
+	
+				
 	
 
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
 
+
+}
+
+async function gayCommand(arguments, receivedMessage) {
+	try {
+		
+
+		const { body } = await superagent.get(
+			"https://www.reddit.com/r/gaynsfw.json?sort=top&t=week"
+		  );
+
+		const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
+		const randomnumber = Math.floor(Math.random() * allowed.length)
+
+		let nekoembed = new Discord.MessageEmbed()
+			.setColor([255, 153, 255])
+			.setTitle(allowed[randomnumber].data.title)
+			.setDescription("Posted by: " + allowed[randomnumber].data.author)
+			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
+			.setURL(allowed[randomnumber].data.url)
+
+			let nekoembed2 = new Discord.MessageEmbed()
+			.setColor([255, 153, 255])
+			.setTitle(allowed[randomnumber].data.title)
+			.setDescription("Posted by: " + allowed[randomnumber].data.author)
+			.setImage(allowed[randomnumber].data.url)
+			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
+			.setURL(allowed[randomnumber].data.url)
+						
+
+			
+			if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/" || "https://www.redgifs.com/")){
+				receivedMessage.channel.send(nekoembed);
+				receivedMessage.channel.send(allowed[randomnumber].data.url);
+				
+			}else {
+				receivedMessage.channel.send(nekoembed2);
+				
+			}
+			
+	
+				
+	
 
 	} catch (err) {
 		catchERR(err, receivedMessage);
@@ -883,6 +977,7 @@ async function pornCommand(arguments, receivedMessage) {
 
 
 }
+
 
 async function abalCommand(arguments, receivedMessage) {
 	try {
@@ -900,10 +995,10 @@ async function abalCommand(arguments, receivedMessage) {
 
 			console.log(coins)
 			if (isNaN(coins)) {
-				receivedMessage.reply('please give a valid number of <:CutePeach:817591031880744988>')
+				receivedMessage.reply('please give a valid number of :PeachCurrency:')
 			}
 			if (coins < 0) {
-				receivedMessage.reply('Cannot give negative amount of <:CutePeach:817591031880744988>')
+				receivedMessage.reply('Cannot give negative amount of :PeachCurrency:')
 			} else if (coins > 0) {
 				const guildId = receivedMessage.guild.id
 				const userId = mention.id
@@ -911,7 +1006,7 @@ async function abalCommand(arguments, receivedMessage) {
 
 				const newCoins = await economy.addcoins(guildId, userId, coins)
 
-				receivedMessage.reply(`you have given <@${userId}> ${coins} Peaches they now have ${newCoins} <:CutePeach:817591031880744988>`)
+				receivedMessage.reply(`you have given <@${userId}> ${coins} Peaches they now have ${newCoins} :PeachCurrency:`)
 
 			}
 		} else {
@@ -940,11 +1035,11 @@ async function sbalCommand(arguments, receivedMessage) {
 			const coins = -Number(arguments[1])
 			console.log(coins)
 			if (isNaN(coins)) {
-				receivedMessage.reply('please give a valid number of <:CutePeach:817591031880744988>')
+				receivedMessage.reply('please give a valid number of :PeachCurrency:')
 			}
 
 			if (coins > 0) {
-				receivedMessage.reply('Cannot remove a negative amount of <:CutePeach:817591031880744988>')
+				receivedMessage.reply('Cannot remove a negative amount of :PeachCurrency:')
 			} else if (coins < 0) {
 
 				const guildId = receivedMessage.guild.id
@@ -952,7 +1047,7 @@ async function sbalCommand(arguments, receivedMessage) {
 
 				const newCoins = await economy.subcoins(guildId, userId, coins)
 
-				receivedMessage.reply(`you have subtracted <@${userId}> ${coins} Peaches they now have ${newCoins} <:CutePeach:817591031880744988>`)
+				receivedMessage.reply(`you have subtracted <@${userId}> ${coins} Peaches they now have ${newCoins} :PeachCurrency:`)
 			}
 		} else {
 			receivedMessage.reply('You dont have admin rights sorry')
@@ -1024,7 +1119,8 @@ async function tweetCommand(arguments, receivedMessage) {
 		let mentionedMember = receivedMessage.mentions.users.first()
 
 		if (!mentionedMember) {
-			return receivedMessage.channel.send("Mention a member");
+			mentionedMember = receivedMessage.author
+			
 		}
 
 		let profile = mentionedMember.displayAvatarURL({ dynamic: false, format: 'png' })
@@ -1103,21 +1199,13 @@ async function updateCommand(arguments, receivedMessage) {
 				.setColor([255, 153, 255])
 				.setTitle("Updates")
 				.setDescription("`==Added==`")
-				.addField("`1.`", "Maid command", false)
-				.addField("`2.`", "Orgy command", false)
-				.addField("`3.`", "Panties command", false)
-				.addField("`4.`", "Panties command", false)
-				.addField("`5.`", "School command", false)
-				.addField("`6.`", "Tentacles command", false)
-				.addField("`7.`", "Thighs command", false)
-				.addField("`8.`", "Uniform command", false)
-				.addField("`9.`", "zettairyouiki command", false)
-				.addField("`10.`", "doujin command", false)
-				.addField("`11.`", "foxgirl command", false)
-				.addField("`12.`", "rpussy command", false)
-				.addField("`13.`", "porngif command", false)
-				.addField("`14.`", "ranal command", false)
-				.addField("`15.`", "rass command", false)
+				.addField("`1.`", "rpanties command", false)
+				.addField("`2.`", "rthighs command", false)
+				.addField("`3.`", "r34random command", false)
+				.addField("`4.`", "r34search command", false)
+				.addField("`5.`", "lesbian command", false)
+				
+				
 			
 
 
@@ -2159,6 +2247,120 @@ async function ranalCommand(arguments, receivedMessage) {
 
 
 }
+
+async function r34randomCommand(arguments, receivedMessage) {
+	try {
+
+	const data = await R34.random(1, 'gif')
+
+	
+	
+
+			let hugembed = new Discord.MessageEmbed()
+				.setColor([255, 153, 255])
+				.setTitle("naughty naughty~")
+				.setImage(data.data[0].media)
+
+		receivedMessage.channel.send(hugembed);
+		
+			
+		
+		
+		
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+async function r34searchCommand(arguments, receivedMessage) {
+	try {
+		const image = arguments[0];
+		
+		if (!image)
+		{
+			receivedMessage.channel.send("**You havent told me what to search**");
+			return;
+		}
+		const data = await R34.search(image);
+
+
+
+			let hugembed = new Discord.MessageEmbed()
+				.setColor([255, 153, 255])
+				.setTitle("naughty naughty~")
+				.setImage(data.data.media)
+
+		receivedMessage.channel.send(hugembed);
+	
+			
+		
+		
+		
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+async function rpantiesCommand(arguments, receivedMessage) {
+	try {
+
+		
+		DabiClient.nsfw.real.panties().then(json => {
+
+			let hugembed = new Discord.MessageEmbed()
+				.setColor([255, 153, 255])
+				.setTitle("oop there was a gust of wind~")
+				.setImage(json.url)
+
+		receivedMessage.channel.send(hugembed);
+			console.log(json);
+		}).catch(error => {
+			console.log(error);
+			// outputs error
+		});
+		
+
+		
+		
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+async function rthighsCommand(arguments, receivedMessage) {
+	try {
+
+		
+		DabiClient.nsfw.real.thighs().then(json => {
+
+			let hugembed = new Discord.MessageEmbed()
+				.setColor([255, 153, 255])
+				.setTitle("Ticc~")
+				.setImage(json.url)
+
+		receivedMessage.channel.send(hugembed);
+			console.log(json);
+		}).catch(error => {
+			console.log(error);
+			// outputs error
+		});
+		
+
+		
+		
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
 async function porngifCommand(arguments, receivedMessage) {
 	try {
 
@@ -2588,7 +2790,7 @@ async function hideCommand(arguments, receivedMessage) {
 		catchERR(err, receivedMessage);
 	}
 }
-/*
+
 async function stabCommand(arguments, receivedMessage) {
 	try {
 
@@ -2642,7 +2844,7 @@ async function stabCommand(arguments, receivedMessage) {
 	}
 
 }
-*/
+
 
 async function biteCommand(arguments, receivedMessage) {
 	try {
