@@ -387,11 +387,47 @@ async function processCommand(receivedMessage) {
 			case 'r34search':
 				r34searchCommand(arguments, receivedMessage);
 				break;
-			case 'lesbian':
+			case 'rlesbian':
 				lesbianCommand(arguments, receivedMessage);
 				break;
-			case 'gay':
-				gayCommand(arguments, receivedMessage);
+			case 'rgay':
+				gay2Command(arguments, receivedMessage);
+				break;
+			case 'rbdsm':
+				rbdsmCommand(arguments, receivedMessage);
+				break;
+			case 'pegged':
+				PeggingCommand(arguments, receivedMessage);
+				break;
+			case 'collared':
+				collaredCommand(arguments, receivedMessage);
+				break;
+			case 'toys':
+				toysCommand(arguments, receivedMessage);
+				break;
+			case 'tattoos':
+				tattoosCommand(arguments, receivedMessage);
+				break;
+			case 'tiny':
+				tinyCommand(arguments, receivedMessage);
+				break;
+			case 'traps':
+				trapsCommand(arguments, receivedMessage);
+				break;
+			case 'bottomless':
+				bottomlessCommand(arguments, receivedMessage);
+				break;
+			case 'group':
+				groupCommand(arguments, receivedMessage);
+				break;
+			case 'pawg':
+				pawgCommand(arguments, receivedMessage);
+				break;
+			case 'acc':
+				accCommand(arguments, receivedMessage);
+				break;
+			case 'nsfw':
+				nsfwCommand(arguments, receivedMessage);
 				break;
 			default:
 				receivedMessage.channel.send('not a command');
@@ -439,7 +475,7 @@ async function helpCommand(arguments, receivedMessage) {
 			.addField("  Fun 🎲", " `meme` `cat` `dog` `avatar` `owo` ", false)// `cat` `dog` `neko` `meme` `search` `needlove` `needhelp` `cookie` `duel`
 			.addField("  Image 📷", " `gun` `jail` `gay` `whymask` `psps` `reason` `yeet` `license` `trigger` `wanted` `rip` `slap2` `spank` `wasted` `beautiful` `ship` ", false)
 			.addField("  Hentai 💦", " `hentai` `pussy` `yuri` `boobs` `futa` `anal` `femdom` `solo` `feet` `yaoi` `threesome` `BDSM` `maid` `orgy` `panties` `school` `tentacles` `thighs` `uniform` `zettaiRyouiki` `doujin` `foxgirl`", false)
-			.addField("  Porn 🍑", " `rboobs` `rpussy` `porngif` `rass` `ranal` `rthighs` `rpanties` `r34random` `r34search` `lesbian`", false)
+			.addField("  Porn 🍑", " `rboobs` `rpussy` `porngif` `rass` `ranal` `rthighs` `rpanties` `r34random` `r34search` `rlesbian` `rgay` `rbdsm` `pegged` `collared` `toys` `tattoos` `tiny` `traps` `bottomless` `group` `pawg`", false)
 			.addField("  Economy 💰", " `daily`", false)
 			.addField("  Actions ✨", " `hug` `pat` `kiss` `cuddle` `bj` `punch` `bite` `stab` `revive` `slap` `carry` `lick` `hf` `boop` `fuck`", false) // `pat` `carry` `kiss` `lick` `boop` `cuddle` `punch` `bite` `revive` `slap` `throw` `happybirthday` `stab` `hf` `propose` `glomp`
 			.addField("  Emotes 😇", " `cum` `smile` `hide` `eat` `cry`  `drink` `sleep` `run` `baka` `dance` `smh`", false)//`run` `sleep` `drink` `eat` `cry` `hide` `smile` `dance` `baka` `gm` `smh` 
@@ -596,6 +632,47 @@ async function catCommand(arguments, receivedMessage) {
 				receivedMessage.channel.send(nekoembed);
 
 			});
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+
+async function accCommand(arguments, receivedMessage) {
+
+
+	try {
+				let embed = new Discord.MessageEmbed()
+					.setColor([255, 153, 255])
+					.setTitle("React with ❤️ here to get access to the server!")
+					.setDescription("In order to get full access to this server you must react to this message by reacting to this message you agree that you have read and understood all the rules of the server")
+					.setThumbnail('https://cdn.discordapp.com/emojis/826638861068140559.gif')
+			
+				receivedMessage.channel.send(embed);
+
+		
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+async function nsfwCommand(arguments, receivedMessage) {
+
+
+	try {
+				let embed = new Discord.MessageEmbed()
+					.setColor([255, 153, 255])
+					.setTitle("React with <:LipBite:771258644888944660> here to get access to the nsfw channels!")
+					.setDescription("In order to get full access to this server you must react to this message by reacting to this message you agree that you are over 18 years of age and are comfortable with adult content")
+					.setThumbnail('https://cdn.discordapp.com/emojis/826638861068140559.gif')
+			
+				receivedMessage.channel.send(embed);
+
+		
 	} catch (err) {
 		catchERR(err, receivedMessage);
 	}
@@ -887,7 +964,7 @@ async function lesbianCommand(arguments, receivedMessage) {
 		
 
 		const { body } = await superagent.get(
-			"https://www.reddit.com/r/lesbians.json?sort=top&t=week"
+			"https://www.reddit.com/r/lesbians.json?sort=top&t=year"
 		  );
 
 		const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
@@ -930,12 +1007,549 @@ async function lesbianCommand(arguments, receivedMessage) {
 
 }
 
-async function gayCommand(arguments, receivedMessage) {
+async function trapsCommand(arguments, receivedMessage) {
 	try {
 		
 
 		const { body } = await superagent.get(
-			"https://www.reddit.com/r/gaynsfw.json?sort=top&t=week"
+			"https://www.reddit.com/r/trapsgonewild.json?sort=top&t=year"
+		  );
+
+		const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
+		const randomnumber = Math.floor(Math.random() * allowed.length)
+
+		let nekoembed = new Discord.MessageEmbed()
+			.setColor([255, 153, 255])
+			.setTitle(allowed[randomnumber].data.title)
+			.setDescription("Posted by: " + allowed[randomnumber].data.author)
+			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
+			.setURL(allowed[randomnumber].data.url)
+
+			let nekoembed2 = new Discord.MessageEmbed()
+			.setColor([255, 153, 255])
+			.setTitle(allowed[randomnumber].data.title)
+			.setDescription("Posted by: " + allowed[randomnumber].data.author)
+			.setImage(allowed[randomnumber].data.url)
+			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
+			.setURL(allowed[randomnumber].data.url)
+						
+
+			
+			if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/" || "https://www.redgifs.com/")){
+				receivedMessage.channel.send(nekoembed);
+				receivedMessage.channel.send(allowed[randomnumber].data.url);
+				
+			}else {
+				receivedMessage.channel.send(nekoembed2);
+				
+			}
+			
+	
+				
+	
+
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+async function bottomlessCommand(arguments, receivedMessage) {
+	try {
+		
+
+		const { body } = await superagent.get(
+			"https://www.reddit.com/r/Bottomless.json?sort=top&t=year"
+		  );
+
+		const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
+		const randomnumber = Math.floor(Math.random() * allowed.length)
+
+		let nekoembed = new Discord.MessageEmbed()
+			.setColor([255, 153, 255])
+			.setTitle(allowed[randomnumber].data.title)
+			.setDescription("Posted by: " + allowed[randomnumber].data.author)
+			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
+			.setURL(allowed[randomnumber].data.url)
+
+			let nekoembed2 = new Discord.MessageEmbed()
+			.setColor([255, 153, 255])
+			.setTitle(allowed[randomnumber].data.title)
+			.setDescription("Posted by: " + allowed[randomnumber].data.author)
+			.setImage(allowed[randomnumber].data.url)
+			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
+			.setURL(allowed[randomnumber].data.url)
+						
+
+			
+			if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/" || "https://www.redgifs.com/")){
+				receivedMessage.channel.send(nekoembed);
+				receivedMessage.channel.send(allowed[randomnumber].data.url);
+				
+			}else {
+				receivedMessage.channel.send(nekoembed2);
+				
+			}
+			
+	
+				
+	
+
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+async function groupCommand(arguments, receivedMessage) {
+	try {
+		
+
+		const { body } = await superagent.get(
+			"https://www.reddit.com/r/groupsex.json?sort=top&t=year"
+		  );
+
+		const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
+		const randomnumber = Math.floor(Math.random() * allowed.length)
+
+		let nekoembed = new Discord.MessageEmbed()
+			.setColor([255, 153, 255])
+			.setTitle(allowed[randomnumber].data.title)
+			.setDescription("Posted by: " + allowed[randomnumber].data.author)
+			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
+			.setURL(allowed[randomnumber].data.url)
+
+			let nekoembed2 = new Discord.MessageEmbed()
+			.setColor([255, 153, 255])
+			.setTitle(allowed[randomnumber].data.title)
+			.setDescription("Posted by: " + allowed[randomnumber].data.author)
+			.setImage(allowed[randomnumber].data.url)
+			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
+			.setURL(allowed[randomnumber].data.url)
+						
+
+			
+			if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/" || "https://www.redgifs.com/")){
+				receivedMessage.channel.send(nekoembed);
+				receivedMessage.channel.send(allowed[randomnumber].data.url);
+				
+			}else {
+				receivedMessage.channel.send(nekoembed2);
+				
+			}
+			
+	
+				
+	
+
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+async function pawgCommand(arguments, receivedMessage) {
+	try {
+		
+
+		const { body } = await superagent.get(
+			"https://www.reddit.com/r/pawg.json?sort=top&t=year"
+		  );
+
+		const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
+		const randomnumber = Math.floor(Math.random() * allowed.length)
+
+		let nekoembed = new Discord.MessageEmbed()
+			.setColor([255, 153, 255])
+			.setTitle(allowed[randomnumber].data.title)
+			.setDescription("Posted by: " + allowed[randomnumber].data.author)
+			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
+			.setURL(allowed[randomnumber].data.url)
+
+			let nekoembed2 = new Discord.MessageEmbed()
+			.setColor([255, 153, 255])
+			.setTitle(allowed[randomnumber].data.title)
+			.setDescription("Posted by: " + allowed[randomnumber].data.author)
+			.setImage(allowed[randomnumber].data.url)
+			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
+			.setURL(allowed[randomnumber].data.url)
+						
+
+			
+			if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/" || "https://www.redgifs.com/")){
+				receivedMessage.channel.send(nekoembed);
+				receivedMessage.channel.send(allowed[randomnumber].data.url);
+				
+			}else {
+				receivedMessage.channel.send(nekoembed2);
+				
+			}
+			
+	
+				
+	
+
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+
+async function tattoosCommand(arguments, receivedMessage) {
+	try {
+		
+
+		const { body } = await superagent.get(
+			"https://www.reddit.com/r/nsfw_tattoos.json?sort=top&t=year"
+		  );
+
+		const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
+		const randomnumber = Math.floor(Math.random() * allowed.length)
+
+		let nekoembed = new Discord.MessageEmbed()
+			.setColor([255, 153, 255])
+			.setTitle(allowed[randomnumber].data.title)
+			.setDescription("Posted by: " + allowed[randomnumber].data.author)
+			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
+			.setURL(allowed[randomnumber].data.url)
+
+			let nekoembed2 = new Discord.MessageEmbed()
+			.setColor([255, 153, 255])
+			.setTitle(allowed[randomnumber].data.title)
+			.setDescription("Posted by: " + allowed[randomnumber].data.author)
+			.setImage(allowed[randomnumber].data.url)
+			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
+			.setURL(allowed[randomnumber].data.url)
+						
+
+			
+			if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/" || "https://www.redgifs.com/")){
+				receivedMessage.channel.send(nekoembed);
+				receivedMessage.channel.send(allowed[randomnumber].data.url);
+				
+			}else {
+				receivedMessage.channel.send(nekoembed2);
+				
+			}
+			
+	
+				
+	
+
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+async function tinyCommand(arguments, receivedMessage) {
+	try {
+		
+
+		const { body } = await superagent.get(
+			"https://www.reddit.com/r/xsmallgirls.json?sort=top&t=year"
+		  );
+
+		const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
+		const randomnumber = Math.floor(Math.random() * allowed.length)
+
+		let nekoembed = new Discord.MessageEmbed()
+			.setColor([255, 153, 255])
+			.setTitle(allowed[randomnumber].data.title)
+			.setDescription("Posted by: " + allowed[randomnumber].data.author)
+			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
+			.setURL(allowed[randomnumber].data.url)
+
+			let nekoembed2 = new Discord.MessageEmbed()
+			.setColor([255, 153, 255])
+			.setTitle(allowed[randomnumber].data.title)
+			.setDescription("Posted by: " + allowed[randomnumber].data.author)
+			.setImage(allowed[randomnumber].data.url)
+			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
+			.setURL(allowed[randomnumber].data.url)
+						
+
+			
+			if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/" || "https://www.redgifs.com/")){
+				receivedMessage.channel.send(nekoembed);
+				receivedMessage.channel.send(allowed[randomnumber].data.url);
+				
+			}else {
+				receivedMessage.channel.send(nekoembed2);
+				
+			}
+			
+	
+				
+	
+
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+async function toysCommand(arguments, receivedMessage) {
+	try {
+		
+
+		const { body } = await superagent.get(
+			"https://www.reddit.com/r/ToysGW.json?sort=top&t=year"
+		  );
+
+		const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
+		const randomnumber = Math.floor(Math.random() * allowed.length)
+
+		let nekoembed = new Discord.MessageEmbed()
+			.setColor([255, 153, 255])
+			.setTitle(allowed[randomnumber].data.title)
+			.setDescription("Posted by: " + allowed[randomnumber].data.author)
+			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
+			.setURL(allowed[randomnumber].data.url)
+
+			let nekoembed2 = new Discord.MessageEmbed()
+			.setColor([255, 153, 255])
+			.setTitle(allowed[randomnumber].data.title)
+			.setDescription("Posted by: " + allowed[randomnumber].data.author)
+			.setImage(allowed[randomnumber].data.url)
+			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
+			.setURL(allowed[randomnumber].data.url)
+						
+
+			
+			if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/" || "https://www.redgifs.com/")){
+				receivedMessage.channel.send(nekoembed);
+				receivedMessage.channel.send(allowed[randomnumber].data.url);
+				
+			}else {
+				receivedMessage.channel.send(nekoembed2);
+				
+			}
+			
+	
+				
+	
+
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+async function PeggingCommand(arguments, receivedMessage) {
+	try {
+		
+
+		const { body } = await superagent.get(
+			"https://www.reddit.com/r/pegging.json?sort=top&t=year"
+		  );
+
+		const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
+		const randomnumber = Math.floor(Math.random() * allowed.length)
+
+		let nekoembed = new Discord.MessageEmbed()
+			.setColor([255, 153, 255])
+			.setTitle(allowed[randomnumber].data.title)
+			.setDescription("Posted by: " + allowed[randomnumber].data.author)
+			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
+			.setURL(allowed[randomnumber].data.url)
+
+			let nekoembed2 = new Discord.MessageEmbed()
+			.setColor([255, 153, 255])
+			.setTitle(allowed[randomnumber].data.title)
+			.setDescription("Posted by: " + allowed[randomnumber].data.author)
+			.setImage(allowed[randomnumber].data.url)
+			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
+			.setURL(allowed[randomnumber].data.url)
+						
+
+			
+			if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/" || "https://www.redgifs.com/")){
+				receivedMessage.channel.send(nekoembed);
+				receivedMessage.channel.send(allowed[randomnumber].data.url);
+				
+			}else {
+				receivedMessage.channel.send(nekoembed2);
+				
+			}
+			
+	
+				
+	
+
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+
+async function collaredCommand(arguments, receivedMessage) {
+	try {
+		
+
+		const { body } = await superagent.get(
+			"https://www.reddit.com/r/collared.json?sort=top&t=year"
+		  );
+
+		const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
+		const randomnumber = Math.floor(Math.random() * allowed.length)
+
+		let nekoembed = new Discord.MessageEmbed()
+			.setColor([255, 153, 255])
+			.setTitle(allowed[randomnumber].data.title)
+			.setDescription("Posted by: " + allowed[randomnumber].data.author)
+			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
+			.setURL(allowed[randomnumber].data.url)
+
+			let nekoembed2 = new Discord.MessageEmbed()
+			.setColor([255, 153, 255])
+			.setTitle(allowed[randomnumber].data.title)
+			.setDescription("Posted by: " + allowed[randomnumber].data.author)
+			.setImage(allowed[randomnumber].data.url)
+			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
+			.setURL(allowed[randomnumber].data.url)
+						
+
+			
+			if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/" || "https://www.redgifs.com/")){
+				receivedMessage.channel.send(nekoembed);
+				receivedMessage.channel.send(allowed[randomnumber].data.url);
+				
+			}else {
+				receivedMessage.channel.send(nekoembed2);
+				
+			}
+			
+	
+				
+	
+
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+
+async function PeggingCommand(arguments, receivedMessage) {
+	try {
+		
+
+		const { body } = await superagent.get(
+			"https://www.reddit.com/r/Pegging.json?sort=top&t=year"
+		  );
+
+		const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
+		const randomnumber = Math.floor(Math.random() * allowed.length)
+
+		let nekoembed = new Discord.MessageEmbed()
+			.setColor([255, 153, 255])
+			.setTitle(allowed[randomnumber].data.title)
+			.setDescription("Posted by: " + allowed[randomnumber].data.author)
+			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
+			.setURL(allowed[randomnumber].data.url)
+
+			let nekoembed2 = new Discord.MessageEmbed()
+			.setColor([255, 153, 255])
+			.setTitle(allowed[randomnumber].data.title)
+			.setDescription("Posted by: " + allowed[randomnumber].data.author)
+			.setImage(allowed[randomnumber].data.url)
+			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
+			.setURL(allowed[randomnumber].data.url)
+						
+
+			
+			if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/" || "https://www.redgifs.com/")){
+				receivedMessage.channel.send(nekoembed);
+				receivedMessage.channel.send(allowed[randomnumber].data.url);
+				
+			}else {
+				receivedMessage.channel.send(nekoembed2);
+				
+			}
+			
+	
+				
+	
+
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+
+
+async function rbdsmCommand(arguments, receivedMessage) {
+	try {
+		
+
+		const { body } = await superagent.get(
+			"https://www.reddit.com/r/bdsm.json?sort=top&t=year"
+		  );
+
+		const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
+		const randomnumber = Math.floor(Math.random() * allowed.length)
+
+		let nekoembed = new Discord.MessageEmbed()
+			.setColor([255, 153, 255])
+			.setTitle(allowed[randomnumber].data.title)
+			.setDescription("Posted by: " + allowed[randomnumber].data.author)
+			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
+			.setURL(allowed[randomnumber].data.url)
+
+			let nekoembed2 = new Discord.MessageEmbed()
+			.setColor([255, 153, 255])
+			.setTitle(allowed[randomnumber].data.title)
+			.setDescription("Posted by: " + allowed[randomnumber].data.author)
+			.setImage(allowed[randomnumber].data.url)
+			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
+			.setURL(allowed[randomnumber].data.url)
+						
+
+			
+			if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/" || "https://www.redgifs.com/")){
+				receivedMessage.channel.send(nekoembed);
+				receivedMessage.channel.send(allowed[randomnumber].data.url);
+				
+			}else if (allowed[randomnumber].data.url.startsWith("https://www.reddit.com/r/bdsm/comments/medwup/subreddit_rules_reformatted_and_posted_for_your/")){
+				rbdsmCommand(arguments, receivedMessage);
+
+			}else {
+				receivedMessage.channel.send(nekoembed2);
+				
+			}
+			
+	
+				
+	
+
+	} catch (err) {
+		catchERR(err, receivedMessage);
+	}
+
+
+}
+
+
+async function gay2Command(arguments, receivedMessage) {
+	try {
+		
+
+		const { body } = await superagent.get(
+			"https://www.reddit.com/r/gaynsfw.json?sort=top&t=year"
 		  );
 
 		const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
@@ -1203,7 +1817,19 @@ async function updateCommand(arguments, receivedMessage) {
 				.addField("`2.`", "rthighs command", false)
 				.addField("`3.`", "r34random command", false)
 				.addField("`4.`", "r34search command", false)
-				.addField("`5.`", "lesbian command", false)
+				.addField("`5.`", "rlesbian command", false)
+				.addField("`6.`", "rgay command", false)
+				.addField("`7.`", "rbdsm command", false)
+				.addField("`7.`", "pegged command", false)
+				.addField("`7.`", "collared command", false)
+				.addField("`7.`", "toys command", false)
+				.addField("`7.`", "tattoos command", false)
+				.addField("`7.`", "tiny command", false)
+				.addField("`7.`", "traps command", false)
+				.addField("`7.`", "bottomless command", false)
+				.addField("`7.`", "group command", false)
+				.addField("`7.`", "pawg command", false)
+				
 				
 				
 			
