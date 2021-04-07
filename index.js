@@ -19,6 +19,7 @@ const nsfw = new NSFW();
 const DabiImages = require("dabi-images");
 const DabiClient = new DabiImages.Client();
 const R34 = new (require('r34api.js'));
+const random = require('random')
 
 
 
@@ -26,6 +27,8 @@ require('dotenv').config();
 
 //https://nekos.life/api/v2/endpoints
 //for all the neko.llife api endpoints as reference
+
+const botv = "beta 1.0"
 
 client.on('ready', async () => {
 	client.user.setActivity('With Boobs! || S!help');
@@ -49,20 +52,18 @@ client.on('ready', async () => {
 });
 async function catchERR(err, message) {
 	try {
-		//send error too Zoe
-		client.users.cache
-			.get('427835914052567040')
-			.send(
-				'There Was a Error at Channel ' +
-				message.channel +
-				' In the Guild ' +
-				message.guild
-			);
-		client.users.cache
-			.get('427835914052567040')
-			.send('ERROR ```' + err + '```');
-
+		const channel = client.channels.cache.find(channel => channel.name === "errors")
+channel.send(
+	' <@427835914052567040> There Was a Error at Channel ' +
+	message.channel +
+	' In the Guild ' +
+	message.guild
+);
+channel.send('ERROR ```' + err + '```');
 	} catch (err) { }
+
+message.channel.send('**Aw snap~** `looks like Misato has been a bad girl and given us a error reporting to the devs immediately`');
+
 }
 
 let claimedCache = []
@@ -429,6 +430,9 @@ async function processCommand(receivedMessage) {
 			case 'nsfw':
 				nsfwCommand(arguments, receivedMessage);
 				break;
+			case 'error':
+				errorCommand(arguments, receivedMessage);
+				break;
 			default:
 				receivedMessage.channel.send('not a command');
 		}
@@ -471,7 +475,7 @@ async function helpCommand(arguments, receivedMessage) {
 			.setColor([255, 153, 255])
 			.setAuthor("█▚▞▌ █ ▄█▀ ▅▀▅ ▀█▀ ⬤  🌺")
 			.setDescription("Here's a list of all the commands my prefix is `S!` Master ❤️")
-			.addField("⠀", "⠀", false)
+			.addField(" ⁣", " ⁣", false)
 			.addField("  Fun 🎲", " `meme` `cat` `dog` `avatar` `owo` ", false)// `cat` `dog` `neko` `meme` `search` `needlove` `needhelp` `cookie` `duel`
 			.addField("  Image 📷", " `gun` `jail` `gay` `whymask` `psps` `reason` `yeet` `license` `trigger` `wanted` `rip` `slap2` `spank` `wasted` `beautiful` `ship` ", false)
 			.addField("  Hentai 💦", " `hentai` `pussy` `yuri` `boobs` `futa` `anal` `femdom` `solo` `feet` `yaoi` `threesome` `BDSM` `maid` `orgy` `panties` `school` `tentacles` `thighs` `uniform` `zettaiRyouiki` `doujin` `foxgirl`", false)
@@ -961,44 +965,56 @@ async function balCommand(arguments, receivedMessage) {
 
 async function lesbianCommand(arguments, receivedMessage) {
 	try {
-		
+
+	let s = "https://www.reddit.com/r/lesbians.json?sort=top&t=year"
 
 		const { body } = await superagent.get(
-			"https://www.reddit.com/r/lesbians.json?sort=top&t=year"
+			s
 		  );
 
 		const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
-		const randomnumber = Math.floor(Math.random() * allowed.length)
+		const randomnumber = random.int((min = 1), (max = allowed.length))
+		
+			const img = allowed[randomnumber].data.url
+		
 
-		let nekoembed = new Discord.MessageEmbed()
+			let embed = new Discord.MessageEmbed()
 			.setColor([255, 153, 255])
 			.setTitle(allowed[randomnumber].data.title)
-			.setDescription("Posted by: " + allowed[randomnumber].data.author)
-			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
-			.setURL(allowed[randomnumber].data.url)
-
-			let nekoembed2 = new Discord.MessageEmbed()
-			.setColor([255, 153, 255])
-			.setTitle(allowed[randomnumber].data.title)
-			.setDescription("Posted by: " + allowed[randomnumber].data.author)
-			.setImage(allowed[randomnumber].data.url)
-			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
-			.setURL(allowed[randomnumber].data.url)
+			.setImage(img)
+			.setURL(img)
 						
-
 			
-			if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/" || "https://www.redgifs.com/")){
-				receivedMessage.channel.send(nekoembed);
-				receivedMessage.channel.send(allowed[randomnumber].data.url);
+			
+			if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/")){	
+				receivedMessage.channel.send("**Here is a REDGIF:**");
+				receivedMessage.channel.send(img);
+				//'gfycat.com
 				
-			}else {
-				receivedMessage.channel.send(nekoembed2);
+			}else if(allowed[randomnumber].data.url.startsWith("https://www.redgifs.com/")) {
+				receivedMessage.channel.send("**Here is a REDGIF:**");
+				receivedMessage.channel.send(img);
+				
+			}else if(allowed[randomnumber].data.url.startsWith("https://gfycat.com/")) {
+				lesbianCommand(arguments, receivedMessage)
+				
+			}else if(allowed[randomnumber].data.url.startsWith("https://www.gfycat.com/")) {
+				lesbianCommand(arguments, receivedMessage)
+					
+			}else if(allowed[randomnumber].data.url.endsWith(".gifv")) {
+
+			let embed2 = new Discord.MessageEmbed()
+			.setColor([255, 153, 255])
+			.setTitle(allowed[randomnumber].data.title)
+			.setImage(img.replace('.gifv', '.gif'))
+			.setURL(img)
+			receivedMessage.channel.send(embed2);
 				
 			}
-			
-	
+			else{
+				receivedMessage.channel.send(embed);
 				
-	
+			}
 
 	} catch (err) {
 		catchERR(err, receivedMessage);
@@ -1015,39 +1031,49 @@ async function trapsCommand(arguments, receivedMessage) {
 			"https://www.reddit.com/r/trapsgonewild.json?sort=top&t=year"
 		  );
 
-		const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
-		const randomnumber = Math.floor(Math.random() * allowed.length)
-
-		let nekoembed = new Discord.MessageEmbed()
-			.setColor([255, 153, 255])
-			.setTitle(allowed[randomnumber].data.title)
-			.setDescription("Posted by: " + allowed[randomnumber].data.author)
-			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
-			.setURL(allowed[randomnumber].data.url)
-
-			let nekoembed2 = new Discord.MessageEmbed()
-			.setColor([255, 153, 255])
-			.setTitle(allowed[randomnumber].data.title)
-			.setDescription("Posted by: " + allowed[randomnumber].data.author)
-			.setImage(allowed[randomnumber].data.url)
-			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
-			.setURL(allowed[randomnumber].data.url)
-						
-
-			
-			if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/" || "https://www.redgifs.com/")){
-				receivedMessage.channel.send(nekoembed);
-				receivedMessage.channel.send(allowed[randomnumber].data.url);
-				
-			}else {
-				receivedMessage.channel.send(nekoembed2);
-				
-			}
-			
+	const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
+	const randomnumber = random.int((min = 1), (max = allowed.length))
 	
-				
+		const img = allowed[randomnumber].data.url
 	
 
+		let embed = new Discord.MessageEmbed()
+		.setColor([255, 153, 255])
+		.setTitle(allowed[randomnumber].data.title)
+		.setImage(img)
+		.setURL(img)
+					
+		
+		
+		if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/")){	
+			receivedMessage.channel.send("**Here is a REDGIF:**");
+			receivedMessage.channel.send(img);
+			//'gfycat.com
+			
+		}else if(allowed[randomnumber].data.url.startsWith("https://www.redgifs.com/")) {
+			receivedMessage.channel.send("**Here is a REDGIF:**");
+			receivedMessage.channel.send(img);
+			
+		}else if(allowed[randomnumber].data.url.startsWith("https://gfycat.com/")) {
+			trapsCommand(arguments, receivedMessage)
+			
+		}else if(allowed[randomnumber].data.url.startsWith("https://www.gfycat.com/")) {
+			trapsCommand(arguments, receivedMessage)
+				
+		}else if(allowed[randomnumber].data.url.endsWith(".gifv")) {
+
+		let embed2 = new Discord.MessageEmbed()
+		.setColor([255, 153, 255])
+		.setTitle(allowed[randomnumber].data.title)
+		.setImage(img.replace('.gifv', '.gif'))
+		.setURL(img)
+		receivedMessage.channel.send(embed2);
+			
+		}
+		else{
+			receivedMessage.channel.send(embed);
+			
+		}
 	} catch (err) {
 		catchERR(err, receivedMessage);
 	}
@@ -1063,38 +1089,49 @@ async function bottomlessCommand(arguments, receivedMessage) {
 			"https://www.reddit.com/r/Bottomless.json?sort=top&t=year"
 		  );
 
-		const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
-		const randomnumber = Math.floor(Math.random() * allowed.length)
-
-		let nekoembed = new Discord.MessageEmbed()
-			.setColor([255, 153, 255])
-			.setTitle(allowed[randomnumber].data.title)
-			.setDescription("Posted by: " + allowed[randomnumber].data.author)
-			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
-			.setURL(allowed[randomnumber].data.url)
-
-			let nekoembed2 = new Discord.MessageEmbed()
-			.setColor([255, 153, 255])
-			.setTitle(allowed[randomnumber].data.title)
-			.setDescription("Posted by: " + allowed[randomnumber].data.author)
-			.setImage(allowed[randomnumber].data.url)
-			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
-			.setURL(allowed[randomnumber].data.url)
-						
-
-			
-			if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/" || "https://www.redgifs.com/")){
-				receivedMessage.channel.send(nekoembed);
-				receivedMessage.channel.send(allowed[randomnumber].data.url);
-				
-			}else {
-				receivedMessage.channel.send(nekoembed2);
-				
-			}
-			
-	
-				
-	
+		  const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
+		  const randomnumber = random.int((min = 1), (max = allowed.length))
+		  
+			  const img = allowed[randomnumber].data.url
+		  
+  
+			  let embed = new Discord.MessageEmbed()
+			  .setColor([255, 153, 255])
+			  .setTitle(allowed[randomnumber].data.title)
+			  .setImage(img)
+			  .setURL(img)
+						  
+			  
+			  
+			  if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/")){	
+				  receivedMessage.channel.send("**Here is a REDGIF:**");
+				  receivedMessage.channel.send(img);
+				  //'gfycat.com
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://www.redgifs.com/")) {
+				  receivedMessage.channel.send("**Here is a REDGIF:**");
+				  receivedMessage.channel.send(img);
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://gfycat.com/")) {
+					bottomlessCommand(arguments, receivedMessage)
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://www.gfycat.com/")) {
+					bottomlessCommand(arguments, receivedMessage)
+					  
+			  }else if(allowed[randomnumber].data.url.endsWith(".gifv")) {
+  
+			  let embed2 = new Discord.MessageEmbed()
+			  .setColor([255, 153, 255])
+			  .setTitle(allowed[randomnumber].data.title)
+			  .setImage(img.replace('.gifv', '.gif'))
+			  .setURL(img)
+			  receivedMessage.channel.send(embed2);
+				  
+			  }
+			  else{
+				  receivedMessage.channel.send(embed);
+				  
+			  }
 
 	} catch (err) {
 		catchERR(err, receivedMessage);
@@ -1111,38 +1148,49 @@ async function groupCommand(arguments, receivedMessage) {
 			"https://www.reddit.com/r/groupsex.json?sort=top&t=year"
 		  );
 
-		const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
-		const randomnumber = Math.floor(Math.random() * allowed.length)
-
-		let nekoembed = new Discord.MessageEmbed()
-			.setColor([255, 153, 255])
-			.setTitle(allowed[randomnumber].data.title)
-			.setDescription("Posted by: " + allowed[randomnumber].data.author)
-			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
-			.setURL(allowed[randomnumber].data.url)
-
-			let nekoembed2 = new Discord.MessageEmbed()
-			.setColor([255, 153, 255])
-			.setTitle(allowed[randomnumber].data.title)
-			.setDescription("Posted by: " + allowed[randomnumber].data.author)
-			.setImage(allowed[randomnumber].data.url)
-			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
-			.setURL(allowed[randomnumber].data.url)
-						
-
-			
-			if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/" || "https://www.redgifs.com/")){
-				receivedMessage.channel.send(nekoembed);
-				receivedMessage.channel.send(allowed[randomnumber].data.url);
-				
-			}else {
-				receivedMessage.channel.send(nekoembed2);
-				
-			}
-			
-	
-				
-	
+		  const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
+		  const randomnumber = random.int((min = 1), (max = allowed.length))
+		  
+			  const img = allowed[randomnumber].data.url
+		  
+  
+			  let embed = new Discord.MessageEmbed()
+			  .setColor([255, 153, 255])
+			  .setTitle(allowed[randomnumber].data.title)
+			  .setImage(img)
+			  .setURL(img)
+						  
+			  
+			  
+			  if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/")){	
+				  receivedMessage.channel.send("**Here is a REDGIF:**");
+				  receivedMessage.channel.send(img);
+				  //'gfycat.com
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://www.redgifs.com/")) {
+				  receivedMessage.channel.send("**Here is a REDGIF:**");
+				  receivedMessage.channel.send(img);
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://gfycat.com/")) {
+				groupCommand(arguments, receivedMessage)
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://www.gfycat.com/")) {
+				groupCommand(arguments, receivedMessage)
+					  
+			  }else if(allowed[randomnumber].data.url.endsWith(".gifv")) {
+  
+			  let embed2 = new Discord.MessageEmbed()
+			  .setColor([255, 153, 255])
+			  .setTitle(allowed[randomnumber].data.title)
+			  .setImage(img.replace('.gifv', '.gif'))
+			  .setURL(img)
+			  receivedMessage.channel.send(embed2);
+				  
+			  }
+			  else{
+				  receivedMessage.channel.send(embed);
+				  
+			  }
 
 	} catch (err) {
 		catchERR(err, receivedMessage);
@@ -1159,39 +1207,49 @@ async function pawgCommand(arguments, receivedMessage) {
 			"https://www.reddit.com/r/pawg.json?sort=top&t=year"
 		  );
 
-		const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
-		const randomnumber = Math.floor(Math.random() * allowed.length)
-
-		let nekoembed = new Discord.MessageEmbed()
-			.setColor([255, 153, 255])
-			.setTitle(allowed[randomnumber].data.title)
-			.setDescription("Posted by: " + allowed[randomnumber].data.author)
-			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
-			.setURL(allowed[randomnumber].data.url)
-
-			let nekoembed2 = new Discord.MessageEmbed()
-			.setColor([255, 153, 255])
-			.setTitle(allowed[randomnumber].data.title)
-			.setDescription("Posted by: " + allowed[randomnumber].data.author)
-			.setImage(allowed[randomnumber].data.url)
-			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
-			.setURL(allowed[randomnumber].data.url)
-						
-
-			
-			if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/" || "https://www.redgifs.com/")){
-				receivedMessage.channel.send(nekoembed);
-				receivedMessage.channel.send(allowed[randomnumber].data.url);
-				
-			}else {
-				receivedMessage.channel.send(nekoembed2);
-				
-			}
-			
-	
-				
-	
-
+		  const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
+		  const randomnumber = random.int((min = 1), (max = allowed.length))
+		  
+			  const img = allowed[randomnumber].data.url
+		  
+  
+			  let embed = new Discord.MessageEmbed()
+			  .setColor([255, 153, 255])
+			  .setTitle(allowed[randomnumber].data.title)
+			  .setImage(img)
+			  .setURL(img)
+						  
+			  
+			  
+			  if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/")){	
+				  receivedMessage.channel.send("**Here is a REDGIF:**");
+				  receivedMessage.channel.send(img);
+				  //'gfycat.com
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://www.redgifs.com/")) {
+				  receivedMessage.channel.send("**Here is a REDGIF:**");
+				  receivedMessage.channel.send(img);
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://gfycat.com/")) {
+				pawgCommand(arguments, receivedMessage)
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://www.gfycat.com/")) {
+				pawgCommand(arguments, receivedMessage)
+					  
+			  }else if(allowed[randomnumber].data.url.endsWith(".gifv")) {
+  
+			  let embed2 = new Discord.MessageEmbed()
+			  .setColor([255, 153, 255])
+			  .setTitle(allowed[randomnumber].data.title)
+			  .setImage(img.replace('.gifv', '.gif'))
+			  .setURL(img)
+			  receivedMessage.channel.send(embed2);
+				  
+			  }
+			  else{
+				  receivedMessage.channel.send(embed);
+				  
+			  }
 	} catch (err) {
 		catchERR(err, receivedMessage);
 	}
@@ -1205,41 +1263,52 @@ async function tattoosCommand(arguments, receivedMessage) {
 		
 
 		const { body } = await superagent.get(
-			"https://www.reddit.com/r/nsfw_tattoos.json?sort=top&t=year"
+			"https://www.reddit.com/r/Hotchickswithtattoos.json?sort=top&t=year"
 		  );
 
-		const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
-		const randomnumber = Math.floor(Math.random() * allowed.length)
-
-		let nekoembed = new Discord.MessageEmbed()
-			.setColor([255, 153, 255])
-			.setTitle(allowed[randomnumber].data.title)
-			.setDescription("Posted by: " + allowed[randomnumber].data.author)
-			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
-			.setURL(allowed[randomnumber].data.url)
-
-			let nekoembed2 = new Discord.MessageEmbed()
-			.setColor([255, 153, 255])
-			.setTitle(allowed[randomnumber].data.title)
-			.setDescription("Posted by: " + allowed[randomnumber].data.author)
-			.setImage(allowed[randomnumber].data.url)
-			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
-			.setURL(allowed[randomnumber].data.url)
-						
-
-			
-			if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/" || "https://www.redgifs.com/")){
-				receivedMessage.channel.send(nekoembed);
-				receivedMessage.channel.send(allowed[randomnumber].data.url);
-				
-			}else {
-				receivedMessage.channel.send(nekoembed2);
-				
-			}
-			
-	
-				
-	
+		  const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
+		  const randomnumber = random.int((min = 1), (max = allowed.length))
+		  
+			  const img = allowed[randomnumber].data.url
+		  
+  
+			  let embed = new Discord.MessageEmbed()
+			  .setColor([255, 153, 255])
+			  .setTitle(allowed[randomnumber].data.title)
+			  .setImage(img)
+			  .setURL(img)
+						  
+			  
+			  
+			  if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/")){	
+				  receivedMessage.channel.send("**Here is a REDGIF:**");
+				  receivedMessage.channel.send(img);
+				  //'gfycat.com
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://www.redgifs.com/")) {
+				  receivedMessage.channel.send("**Here is a REDGIF:**");
+				  receivedMessage.channel.send(img);
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://gfycat.com/")) {
+				tattoosCommand(arguments, receivedMessage)
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://www.gfycat.com/")) {
+				tattoosCommand(arguments, receivedMessage)
+					  
+			  }else if(allowed[randomnumber].data.url.endsWith(".gifv")) {
+  
+			  let embed2 = new Discord.MessageEmbed()
+			  .setColor([255, 153, 255])
+			  .setTitle(allowed[randomnumber].data.title)
+			  .setImage(img.replace('.gifv', '.gif'))
+			  .setURL(img)
+			  receivedMessage.channel.send(embed2);
+				  
+			  }
+			  else{
+				  receivedMessage.channel.send(embed);
+				  
+			  }
 
 	} catch (err) {
 		catchERR(err, receivedMessage);
@@ -1256,39 +1325,49 @@ async function tinyCommand(arguments, receivedMessage) {
 			"https://www.reddit.com/r/xsmallgirls.json?sort=top&t=year"
 		  );
 
-		const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
-		const randomnumber = Math.floor(Math.random() * allowed.length)
-
-		let nekoembed = new Discord.MessageEmbed()
-			.setColor([255, 153, 255])
-			.setTitle(allowed[randomnumber].data.title)
-			.setDescription("Posted by: " + allowed[randomnumber].data.author)
-			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
-			.setURL(allowed[randomnumber].data.url)
-
-			let nekoembed2 = new Discord.MessageEmbed()
-			.setColor([255, 153, 255])
-			.setTitle(allowed[randomnumber].data.title)
-			.setDescription("Posted by: " + allowed[randomnumber].data.author)
-			.setImage(allowed[randomnumber].data.url)
-			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
-			.setURL(allowed[randomnumber].data.url)
-						
-
-			
-			if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/" || "https://www.redgifs.com/")){
-				receivedMessage.channel.send(nekoembed);
-				receivedMessage.channel.send(allowed[randomnumber].data.url);
-				
-			}else {
-				receivedMessage.channel.send(nekoembed2);
-				
-			}
-			
-	
-				
-	
-
+		  const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
+		  const randomnumber = random.int((min = 1), (max = allowed.length))
+		  
+			  const img = allowed[randomnumber].data.url
+		  
+  
+			  let embed = new Discord.MessageEmbed()
+			  .setColor([255, 153, 255])
+			  .setTitle(allowed[randomnumber].data.title)
+			  .setImage(img)
+			  .setURL(img)
+						  
+			  
+			  
+			  if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/")){	
+				  receivedMessage.channel.send("**Here is a REDGIF:**");
+				  receivedMessage.channel.send(img);
+				  //'gfycat.com
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://www.redgifs.com/")) {
+				  receivedMessage.channel.send("**Here is a REDGIF:**");
+				  receivedMessage.channel.send(img);
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://gfycat.com/")) {
+				tinyCommand(arguments, receivedMessage)
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://www.gfycat.com/")) {
+				tinyCommand(arguments, receivedMessage)
+					  
+			  }else if(allowed[randomnumber].data.url.endsWith(".gifv")) {
+  
+			  let embed2 = new Discord.MessageEmbed()
+			  .setColor([255, 153, 255])
+			  .setTitle(allowed[randomnumber].data.title)
+			  .setImage(img.replace('.gifv', '.gif'))
+			  .setURL(img)
+			  receivedMessage.channel.send(embed2);
+				  
+			  }
+			  else{
+				  receivedMessage.channel.send(embed);
+				  
+			  }
 	} catch (err) {
 		catchERR(err, receivedMessage);
 	}
@@ -1304,38 +1383,49 @@ async function toysCommand(arguments, receivedMessage) {
 			"https://www.reddit.com/r/ToysGW.json?sort=top&t=year"
 		  );
 
-		const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
-		const randomnumber = Math.floor(Math.random() * allowed.length)
-
-		let nekoembed = new Discord.MessageEmbed()
-			.setColor([255, 153, 255])
-			.setTitle(allowed[randomnumber].data.title)
-			.setDescription("Posted by: " + allowed[randomnumber].data.author)
-			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
-			.setURL(allowed[randomnumber].data.url)
-
-			let nekoembed2 = new Discord.MessageEmbed()
-			.setColor([255, 153, 255])
-			.setTitle(allowed[randomnumber].data.title)
-			.setDescription("Posted by: " + allowed[randomnumber].data.author)
-			.setImage(allowed[randomnumber].data.url)
-			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
-			.setURL(allowed[randomnumber].data.url)
-						
-
-			
-			if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/" || "https://www.redgifs.com/")){
-				receivedMessage.channel.send(nekoembed);
-				receivedMessage.channel.send(allowed[randomnumber].data.url);
-				
-			}else {
-				receivedMessage.channel.send(nekoembed2);
-				
-			}
-			
-	
-				
-	
+		  const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
+		  const randomnumber = random.int((min = 1), (max = allowed.length))
+		  
+			  const img = allowed[randomnumber].data.url
+		  
+  
+			  let embed = new Discord.MessageEmbed()
+			  .setColor([255, 153, 255])
+			  .setTitle(allowed[randomnumber].data.title)
+			  .setImage(img)
+			  .setURL(img)
+						  
+			  
+			  
+			  if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/")){	
+				  receivedMessage.channel.send("**Here is a REDGIF:**");
+				  receivedMessage.channel.send(img);
+				  //'gfycat.com
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://www.redgifs.com/")) {
+				  receivedMessage.channel.send("**Here is a REDGIF:**");
+				  receivedMessage.channel.send(img);
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://gfycat.com/")) {
+				toysCommand(arguments, receivedMessage)
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://www.gfycat.com/")) {
+				toysCommand(arguments, receivedMessage)
+					  
+			  }else if(allowed[randomnumber].data.url.endsWith(".gifv")) {
+  
+			  let embed2 = new Discord.MessageEmbed()
+			  .setColor([255, 153, 255])
+			  .setTitle(allowed[randomnumber].data.title)
+			  .setImage(img.replace('.gifv', '.gif'))
+			  .setURL(img)
+			  receivedMessage.channel.send(embed2);
+				  
+			  }
+			  else{
+				  receivedMessage.channel.send(embed);
+				  
+			  }
 
 	} catch (err) {
 		catchERR(err, receivedMessage);
@@ -1352,39 +1442,49 @@ async function PeggingCommand(arguments, receivedMessage) {
 			"https://www.reddit.com/r/pegging.json?sort=top&t=year"
 		  );
 
-		const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
-		const randomnumber = Math.floor(Math.random() * allowed.length)
-
-		let nekoembed = new Discord.MessageEmbed()
-			.setColor([255, 153, 255])
-			.setTitle(allowed[randomnumber].data.title)
-			.setDescription("Posted by: " + allowed[randomnumber].data.author)
-			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
-			.setURL(allowed[randomnumber].data.url)
-
-			let nekoembed2 = new Discord.MessageEmbed()
-			.setColor([255, 153, 255])
-			.setTitle(allowed[randomnumber].data.title)
-			.setDescription("Posted by: " + allowed[randomnumber].data.author)
-			.setImage(allowed[randomnumber].data.url)
-			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
-			.setURL(allowed[randomnumber].data.url)
-						
-
-			
-			if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/" || "https://www.redgifs.com/")){
-				receivedMessage.channel.send(nekoembed);
-				receivedMessage.channel.send(allowed[randomnumber].data.url);
-				
-			}else {
-				receivedMessage.channel.send(nekoembed2);
-				
-			}
-			
-	
-				
-	
-
+		  const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
+		  const randomnumber = random.int((min = 1), (max = allowed.length))
+		  
+			  const img = allowed[randomnumber].data.url
+		  
+  
+			  let embed = new Discord.MessageEmbed()
+			  .setColor([255, 153, 255])
+			  .setTitle(allowed[randomnumber].data.title)
+			  .setImage(img)
+			  .setURL(img)
+						  
+			  
+			  
+			  if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/")){	
+				  receivedMessage.channel.send("**Here is a REDGIF:**");
+				  receivedMessage.channel.send(img);
+				  //'gfycat.com
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://www.redgifs.com/")) {
+				  receivedMessage.channel.send("**Here is a REDGIF:**");
+				  receivedMessage.channel.send(img);
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://gfycat.com/")) {
+				PeggingCommand(arguments, receivedMessage)
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://www.gfycat.com/")) {
+				PeggingCommand(arguments, receivedMessage)
+					  
+			  }else if(allowed[randomnumber].data.url.endsWith(".gifv")) {
+  
+			  let embed2 = new Discord.MessageEmbed()
+			  .setColor([255, 153, 255])
+			  .setTitle(allowed[randomnumber].data.title)
+			  .setImage(img.replace('.gifv', '.gif'))
+			  .setURL(img)
+			  receivedMessage.channel.send(embed2);
+				  
+			  }
+			  else{
+				  receivedMessage.channel.send(embed);
+				  
+			  }
 	} catch (err) {
 		catchERR(err, receivedMessage);
 	}
@@ -1401,38 +1501,49 @@ async function collaredCommand(arguments, receivedMessage) {
 			"https://www.reddit.com/r/collared.json?sort=top&t=year"
 		  );
 
-		const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
-		const randomnumber = Math.floor(Math.random() * allowed.length)
-
-		let nekoembed = new Discord.MessageEmbed()
-			.setColor([255, 153, 255])
-			.setTitle(allowed[randomnumber].data.title)
-			.setDescription("Posted by: " + allowed[randomnumber].data.author)
-			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
-			.setURL(allowed[randomnumber].data.url)
-
-			let nekoembed2 = new Discord.MessageEmbed()
-			.setColor([255, 153, 255])
-			.setTitle(allowed[randomnumber].data.title)
-			.setDescription("Posted by: " + allowed[randomnumber].data.author)
-			.setImage(allowed[randomnumber].data.url)
-			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
-			.setURL(allowed[randomnumber].data.url)
-						
-
-			
-			if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/" || "https://www.redgifs.com/")){
-				receivedMessage.channel.send(nekoembed);
-				receivedMessage.channel.send(allowed[randomnumber].data.url);
-				
-			}else {
-				receivedMessage.channel.send(nekoembed2);
-				
-			}
-			
-	
-				
-	
+		  const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
+		  const randomnumber = random.int((min = 1), (max = allowed.length))
+		  
+			  const img = allowed[randomnumber].data.url
+		  
+  
+			  let embed = new Discord.MessageEmbed()
+			  .setColor([255, 153, 255])
+			  .setTitle(allowed[randomnumber].data.title)
+			  .setImage(img)
+			  .setURL(img)
+						  
+			  
+			  
+			  if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/")){	
+				  receivedMessage.channel.send("**Here is a REDGIF:**");
+				  receivedMessage.channel.send(img);
+				  //'gfycat.com
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://www.redgifs.com/")) {
+				  receivedMessage.channel.send("**Here is a REDGIF:**");
+				  receivedMessage.channel.send(img);
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://gfycat.com/")) {
+				collaredCommand(arguments, receivedMessage)
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://www.gfycat.com/")) {
+				collaredCommand(arguments, receivedMessage)
+					  
+			  }else if(allowed[randomnumber].data.url.endsWith(".gifv")) {
+  
+			  let embed2 = new Discord.MessageEmbed()
+			  .setColor([255, 153, 255])
+			  .setTitle(allowed[randomnumber].data.title)
+			  .setImage(img.replace('.gifv', '.gif'))
+			  .setURL(img)
+			  receivedMessage.channel.send(embed2);
+				  
+			  }
+			  else{
+				  receivedMessage.channel.send(embed);
+				  
+			  }
 
 	} catch (err) {
 		catchERR(err, receivedMessage);
@@ -1450,39 +1561,49 @@ async function PeggingCommand(arguments, receivedMessage) {
 			"https://www.reddit.com/r/Pegging.json?sort=top&t=year"
 		  );
 
-		const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
-		const randomnumber = Math.floor(Math.random() * allowed.length)
+	const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
+		const randomnumber = random.int((min = 1), (max = allowed.length))
+		
+			const img = allowed[randomnumber].data.url
+		
 
-		let nekoembed = new Discord.MessageEmbed()
+			let embed = new Discord.MessageEmbed()
 			.setColor([255, 153, 255])
 			.setTitle(allowed[randomnumber].data.title)
-			.setDescription("Posted by: " + allowed[randomnumber].data.author)
-			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
-			.setURL(allowed[randomnumber].data.url)
-
-			let nekoembed2 = new Discord.MessageEmbed()
-			.setColor([255, 153, 255])
-			.setTitle(allowed[randomnumber].data.title)
-			.setDescription("Posted by: " + allowed[randomnumber].data.author)
-			.setImage(allowed[randomnumber].data.url)
-			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
-			.setURL(allowed[randomnumber].data.url)
+			.setImage(img)
+			.setURL(img)
 						
-
 			
-			if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/" || "https://www.redgifs.com/")){
-				receivedMessage.channel.send(nekoembed);
-				receivedMessage.channel.send(allowed[randomnumber].data.url);
+			
+			if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/")){	
+				receivedMessage.channel.send("**Here is a REDGIF:**");
+				receivedMessage.channel.send(img);
+				//'gfycat.com
 				
-			}else {
-				receivedMessage.channel.send(nekoembed2);
+			}else if(allowed[randomnumber].data.url.startsWith("https://www.redgifs.com/")) {
+				receivedMessage.channel.send("**Here is a REDGIF:**");
+				receivedMessage.channel.send(img);
+				
+			}else if(allowed[randomnumber].data.url.startsWith("https://gfycat.com/")) {
+				PeggingCommand(arguments, receivedMessage)
+				
+			}else if(allowed[randomnumber].data.url.startsWith("https://www.gfycat.com/")) {
+				PeggingCommand(arguments, receivedMessage)
+					
+			}else if(allowed[randomnumber].data.url.endsWith(".gifv")) {
+
+			let embed2 = new Discord.MessageEmbed()
+			.setColor([255, 153, 255])
+			.setTitle(allowed[randomnumber].data.title)
+			.setImage(img.replace('.gifv', '.gif'))
+			.setURL(img)
+			receivedMessage.channel.send(embed2);
 				
 			}
-			
-	
+			else{
+				receivedMessage.channel.send(embed);
 				
-	
-
+			}
 	} catch (err) {
 		catchERR(err, receivedMessage);
 	}
@@ -1500,41 +1621,49 @@ async function rbdsmCommand(arguments, receivedMessage) {
 			"https://www.reddit.com/r/bdsm.json?sort=top&t=year"
 		  );
 
-		const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
-		const randomnumber = Math.floor(Math.random() * allowed.length)
-
-		let nekoembed = new Discord.MessageEmbed()
-			.setColor([255, 153, 255])
-			.setTitle(allowed[randomnumber].data.title)
-			.setDescription("Posted by: " + allowed[randomnumber].data.author)
-			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
-			.setURL(allowed[randomnumber].data.url)
-
-			let nekoembed2 = new Discord.MessageEmbed()
-			.setColor([255, 153, 255])
-			.setTitle(allowed[randomnumber].data.title)
-			.setDescription("Posted by: " + allowed[randomnumber].data.author)
-			.setImage(allowed[randomnumber].data.url)
-			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
-			.setURL(allowed[randomnumber].data.url)
-						
-
-			
-			if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/" || "https://www.redgifs.com/")){
-				receivedMessage.channel.send(nekoembed);
-				receivedMessage.channel.send(allowed[randomnumber].data.url);
-				
-			}else if (allowed[randomnumber].data.url.startsWith("https://www.reddit.com/r/bdsm/comments/medwup/subreddit_rules_reformatted_and_posted_for_your/")){
-				rbdsmCommand(arguments, receivedMessage);
-
-			}else {
-				receivedMessage.channel.send(nekoembed2);
-				
-			}
-			
-	
-				
-	
+		  const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
+		  const randomnumber = random.int((min = 1), (max = allowed.length))
+		  
+			  const img = allowed[randomnumber].data.url
+		  
+  
+			  let embed = new Discord.MessageEmbed()
+			  .setColor([255, 153, 255])
+			  .setTitle(allowed[randomnumber].data.title)
+			  .setImage(img)
+			  .setURL(img)
+						  
+			  
+			  
+			  if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/")){	
+				  receivedMessage.channel.send("**Here is a REDGIF:**");
+				  receivedMessage.channel.send(img);
+				  //'gfycat.com
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://www.redgifs.com/")) {
+				  receivedMessage.channel.send("**Here is a REDGIF:**");
+				  receivedMessage.channel.send(img);
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://gfycat.com/")) {
+				rbdsmCommand(arguments, receivedMessage)
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://www.gfycat.com/")) {
+				rbdsmCommand(arguments, receivedMessage)
+					  
+			  }else if(allowed[randomnumber].data.url.endsWith(".gifv")) {
+  
+			  let embed2 = new Discord.MessageEmbed()
+			  .setColor([255, 153, 255])
+			  .setTitle(allowed[randomnumber].data.title)
+			  .setImage(img.replace('.gifv', '.gif'))
+			  .setURL(img)
+			  receivedMessage.channel.send(embed2);
+				  
+			  }
+			  else{
+				  receivedMessage.channel.send(embed);
+				  
+			  }
 
 	} catch (err) {
 		catchERR(err, receivedMessage);
@@ -1552,38 +1681,49 @@ async function gay2Command(arguments, receivedMessage) {
 			"https://www.reddit.com/r/gaynsfw.json?sort=top&t=year"
 		  );
 
-		const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
-		const randomnumber = Math.floor(Math.random() * allowed.length)
-
-		let nekoembed = new Discord.MessageEmbed()
-			.setColor([255, 153, 255])
-			.setTitle(allowed[randomnumber].data.title)
-			.setDescription("Posted by: " + allowed[randomnumber].data.author)
-			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
-			.setURL(allowed[randomnumber].data.url)
-
-			let nekoembed2 = new Discord.MessageEmbed()
-			.setColor([255, 153, 255])
-			.setTitle(allowed[randomnumber].data.title)
-			.setDescription("Posted by: " + allowed[randomnumber].data.author)
-			.setImage(allowed[randomnumber].data.url)
-			.addField("Other info:", "Up votes: " + allowed[randomnumber].data.ups + " / Comments: " + allowed[randomnumber].data.num_comments)
-			.setURL(allowed[randomnumber].data.url)
-						
-
-			
-			if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/" || "https://www.redgifs.com/")){
-				receivedMessage.channel.send(nekoembed);
-				receivedMessage.channel.send(allowed[randomnumber].data.url);
-				
-			}else {
-				receivedMessage.channel.send(nekoembed2);
-				
-			}
-			
-	
-				
-	
+		  const allowed = receivedMessage.channel.nsfw ? body.data.children : body.data.children.filter(post => !post.data.over_18);
+		  const randomnumber = random.int((min = 1), (max = allowed.length))
+		  
+			  const img = allowed[randomnumber].data.url
+		  
+  
+			  let embed = new Discord.MessageEmbed()
+			  .setColor([255, 153, 255])
+			  .setTitle(allowed[randomnumber].data.title)
+			  .setImage(img)
+			  .setURL(img)
+						  
+			  
+			  
+			  if (allowed[randomnumber].data.url.startsWith("https://redgifs.com/")){	
+				  receivedMessage.channel.send("**Here is a REDGIF:**");
+				  receivedMessage.channel.send(img);
+				  //'gfycat.com
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://www.redgifs.com/")) {
+				  receivedMessage.channel.send("**Here is a REDGIF:**");
+				  receivedMessage.channel.send(img);
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://gfycat.com/")) {
+				gay2Command(arguments, receivedMessage)
+				  
+			  }else if(allowed[randomnumber].data.url.startsWith("https://www.gfycat.com/")) {
+				gay2Command(arguments, receivedMessage)
+					  
+			  }else if(allowed[randomnumber].data.url.endsWith(".gifv")) {
+  
+			  let embed2 = new Discord.MessageEmbed()
+			  .setColor([255, 153, 255])
+			  .setTitle(allowed[randomnumber].data.title)
+			  .setImage(img.replace('.gifv', '.gif'))
+			  .setURL(img)
+			  receivedMessage.channel.send(embed2);
+				  
+			  }
+			  else{
+				  receivedMessage.channel.send(embed);
+				  
+			  }
 
 	} catch (err) {
 		catchERR(err, receivedMessage);
@@ -1808,35 +1948,9 @@ async function smhCommand(arguments, receivedMessage) {
 async function updateCommand(arguments, receivedMessage) {
 
 	try {
-		 
-			let hugembed = new Discord.MessageEmbed()
-				.setColor([255, 153, 255])
-				.setTitle("Updates")
-				.setDescription("`==Added==`")
-				.addField("`1.`", "rpanties command", false)
-				.addField("`2.`", "rthighs command", false)
-				.addField("`3.`", "r34random command", false)
-				.addField("`4.`", "r34search command", false)
-				.addField("`5.`", "rlesbian command", false)
-				.addField("`6.`", "rgay command", false)
-				.addField("`7.`", "rbdsm command", false)
-				.addField("`7.`", "pegged command", false)
-				.addField("`7.`", "collared command", false)
-				.addField("`7.`", "toys command", false)
-				.addField("`7.`", "tattoos command", false)
-				.addField("`7.`", "tiny command", false)
-				.addField("`7.`", "traps command", false)
-				.addField("`7.`", "bottomless command", false)
-				.addField("`7.`", "group command", false)
-				.addField("`7.`", "pawg command", false)
-				
-				
-				
-			
-
-
-			receivedMessage.channel.send(hugembed);
-		
+		receivedMessage.channel.send("**Updates! Bot Ver:** " + botv);
+		receivedMessage.channel.send("```Updated the Porn commands to be cleaner fixed blank char issue in help command```");
+	
 		
 	} catch (err) {
 		catchERR(err, receivedMessage);
