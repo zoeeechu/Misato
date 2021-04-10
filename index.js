@@ -433,6 +433,7 @@ async function processCommand(receivedMessage) {
 			case 'error':
 				errorCommand(arguments, receivedMessage);
 				break;
+			
 			default:
 				receivedMessage.channel.send('not a command');
 		}
@@ -443,6 +444,11 @@ async function processCommand(receivedMessage) {
 		catchERR(err, receivedMessage);
 	}
 }
+
+
+
+
+
 
 client.on('message', receivedMessage => {
 	try {
@@ -644,6 +650,7 @@ async function catCommand(arguments, receivedMessage) {
 }
 
 
+
 async function accCommand(arguments, receivedMessage) {
 
 
@@ -654,7 +661,7 @@ async function accCommand(arguments, receivedMessage) {
 					.setDescription("In order to get full access to this server you must react to this message by reacting to this message you agree that you have read and understood all the rules of the server")
 					.setThumbnail('https://cdn.discordapp.com/emojis/826638861068140559.gif')
 			
-				receivedMessage.channel.send(embed);
+				(embed);
 
 		
 	} catch (err) {
