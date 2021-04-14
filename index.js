@@ -20,7 +20,7 @@ const DabiImages = require("dabi-images");
 const DabiClient = new DabiImages.Client();
 const R34 = new (require('r34api.js'));
 const random = require('random')
-
+const profileSchema = require(__dirname + "/profile_schema.js")
 
 
 require('dotenv').config();
@@ -28,7 +28,7 @@ require('dotenv').config();
 //https://nekos.life/api/v2/endpoints
 //for all the neko.llife api endpoints as reference
 
-const botv = "beta 1.0"
+const botv = "beta 1.2"
 
 client.on('ready', async () => {
 	client.user.setActivity('With Boobs! || S!help');
@@ -433,6 +433,9 @@ async function processCommand(receivedMessage) {
 			case 'error':
 				errorCommand(arguments, receivedMessage);
 				break;
+			case 'addxp':
+				addxpCommand(arguments, receivedMessage);
+				break;
 			
 			default:
 				receivedMessage.channel.send('not a command');
@@ -649,7 +652,43 @@ async function catCommand(arguments, receivedMessage) {
 
 }
 
+async function addxpCommand(arguments, receivedMessage, xpToAdd) {
+	
+	const mention = receivedMessage.mentions.users.first()
+	if (!mention) {
+		receivedMessage.reply('You did not say who you wanted to add to')
+		return
+	}
 
+const guildId = receivedMessage.guild.id
+const userId = mention.id
+addXP(guildId, userId, 23)
+
+await mongo().then(async mongoose => {
+try {
+const result = await profileSchema.findOneAndUpdate({
+	guildId,
+	userId
+},{
+	guildId,
+	userId,
+	$inc: {
+		xp: xpToAdd
+	}
+},{
+upsert: true,
+new: true
+})
+
+console.log(result)
+
+}finally{
+mongoose.connection.close()
+}
+})
+}
+
+module.exports.addXP = addxpCommand
 
 async function accCommand(arguments, receivedMessage) {
 
